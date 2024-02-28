@@ -45,3 +45,12 @@ jobs:
           name: release_on_${{ matrix. os }}
           path: release/
           retention-days: 5
+
+      - name: 发布
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: false
+          files: |
+            release/*.exe
+            release/*.dmg
+            release/*.yml
