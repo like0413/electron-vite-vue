@@ -34,7 +34,7 @@ jobs:
       - name: 安装依赖
         run: npm install
 
-      - name: 构建程序
+      - name: 构建
         run: npm run build
         # env:
         #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
