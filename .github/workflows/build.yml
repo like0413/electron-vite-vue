@@ -4,42 +4,41 @@ on:
   push:
     branches: [main]
     paths-ignore:
-      - "**.md"
-      - "**.spec.js"
-      - ".idea"
-      - ".vscode"
-      - ".dockerignore"
-      - "Dockerfile"
-      - ".gitignore"
-      - ".github/**"
-      - "!.github/workflows/build.yml"
+      - '**.md'
+      - '**.spec.js'
+      - '.idea'
+      - '.vscode'
+      - '.dockerignore'
+      - 'Dockerfile'
+      - '.gitignore'
+      - '.github/**'
+      - '!.github/workflows/build.yml'
 
 jobs:
   build:
     runs-on: ${{ matrix.os }}
-
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
 
     steps:
-      - name: Checkout Code
+      - name: 检出代码
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      - name: 设置node版本
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
-      - name: Install Dependencies
+      - name: 安装依赖
         run: npm install
 
-      - name: Build Release Files
+      - name: 构建程序
         run: npm run build
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # env:
+        #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload Artifact
+      - name: 上传构建产物
         uses: actions/upload-artifact@v3
         with:
           name: release_on_${{ matrix. os }}
