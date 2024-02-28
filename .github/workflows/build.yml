@@ -28,6 +28,13 @@ jobs:
       - name: 检出代码
         uses: actions/checkout@v3
 
+      # - name: Cache Primes
+      #   id: cache-primes
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: prime-numbers
+      #     key: ${{ runner.os }}-primes
+
       - name: 设置node版本
         uses: actions/setup-node@v3
         with:
@@ -40,9 +47,9 @@ jobs:
         run: npm run build
 
       - name: 上传构建产物
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: release_on_${{ matrix. os }}
+          name: release_on_${{ matrix.os }}
           path: release/
           retention-days: 1
 
