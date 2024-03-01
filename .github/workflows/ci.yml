@@ -18,10 +18,12 @@ env:
 jobs:
   Build:
     runs-on: ${{ matrix.os }}
-    if: startsWith(github.ref, 'refs/tags/') || github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true || (github.ref == 'refs/heads/main' && startsWith(github.ref, 'refs/tags/'))
     strategy:
       matrix:
         os: [windows-latest, macos-latest]
+    outputs:
+      pkg_version: ${{ steps.get_version.outputs.version }}
     steps:
       - run: echo "github_event_name： ${{ github.event_name }}"
       - run: echo "github_ref_type： ${{ github.ref_type }}"
@@ -45,14 +47,21 @@ jobs:
         run: pnpm install
       - name: 构建
         run: pnpm build
+      - name: 获取 package.json 版本
+        id: get_version
+        run: echo ::set-output name=version::$(node -p "require('./package.json').version")
+        shell: bash
+      - name: 查看版本
+        run: echo ${{ steps.get_version.outputs.version }}
+        shell: bash
       - name: 上传构建产物
         uses: actions/upload-artifact@v4
         with:
-          name: binary-${{ matrix.os }}
+          name: binary-${{ matrix.os }}-${{ steps.get_version.outputs.version }}
           path: |
-            release/*.exe
-            release/*.dmg
-            release/*.yml
+            release/${{ steps.get_version.outputs.version }}/*.exe
+            release/${{ steps.get_version.outputs.version }}/*.dmg
+            release/${{ steps.get_version.outputs.version }}/*.yml
           retention-days: 5 # 保留5天
 
   Release:
@@ -68,11 +77,11 @@ jobs:
         with:
           name: binary-${{ matrix.os }}
       - name: 查看构建产物
-        run: ls -R
+        run: ls
       - name: 发布
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            release/*.exe
-            release/*.dmg
-            release/*.yml
+            release/${{ needs.Build.outputs.pkg_version }}/*.exe
+            release/${{ needs.Build.outputs.pkg_version }}/*.dmg
+            release/${{ needs.Build.outputs.pkg_version }}/*.yml
