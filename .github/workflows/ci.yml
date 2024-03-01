@@ -47,7 +47,7 @@ jobs:
       - name: 上传构建产物
         uses: actions/upload-artifact@v4
         with:
-          name: binary-${{ matrix.os }}-${{ steps.get_version.outputs.version }}
+          name: tingkelai-${{ matrix.os }}-${{ steps.get_version.outputs.version }}
           path: |
             release/${{ steps.get_version.outputs.version }}/*.exe
             release/${{ steps.get_version.outputs.version }}/*.dmg
