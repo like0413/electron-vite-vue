@@ -18,7 +18,7 @@ env:
 jobs:
   Build:
     runs-on: ${{ matrix.os }}
-    if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true || startsWith(github.ref, 'refs/tags/')
     strategy:
       matrix:
         os: [windows-latest, macos-latest]
