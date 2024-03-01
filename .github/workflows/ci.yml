@@ -47,9 +47,13 @@ jobs:
         run: pnpm install
       - name: 构建
         run: pnpm build
+      - name: 列出当前目录
+        run: ls -R
       - name: 获取 package.json 版本
         id: get_version
         run: echo ::set-output name=version::$(node -p "require('./package.json').version")
+      - name: 查看版本
+        run: echo ${{ steps.get_version.outputs.version }}
       - name: 上传构建产物
         uses: actions/upload-artifact@v4
         with:
