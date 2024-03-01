@@ -25,7 +25,7 @@ jobs:
     # outputs:
     #   pkg_version: ${{ steps.get_version.outputs.version }}
     steps:
-      - run: echo "github_event： ${{ github.event }}"
+      - run: echo "github_event： ${{ fromJson(github.event) }}"
       - run: echo "github_event_name： ${{ github.event_name }}"
       - run: echo "github_ref_type： ${{ github.ref_type }}"
       - run: echo "github_ref_name： ${{ github.ref_name }}"
