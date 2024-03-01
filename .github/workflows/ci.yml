@@ -34,7 +34,7 @@ jobs:
       - name: 设置 node
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
           cache: 'pnpm'
       - name: 安装依赖
         run: pnpm install
@@ -43,9 +43,6 @@ jobs:
       - name: 获取 package.json 版本
         id: get_version
         run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
-        shell: bash
-      - name: 查看版本
-        run: echo ${{ steps.get_version.outputs.version }}
         shell: bash
       - name: 上传构建产物
         uses: actions/upload-artifact@v4
@@ -68,9 +65,12 @@ jobs:
       - name: 下载构建产物
         uses: actions/download-artifact@v4
         with:
-          name: binary-${{ matrix.os }}-${{ needs.Build.outputs.pkg_version }}
+          name: tingkelai-${{ matrix.os }}-${{ needs.Build.outputs.pkg_version }}
       - name: 查看构建产物
         run: ls
+      - name: 生成发布说明
+        id: generate_draft
+        uses: release-drafter/release-drafter@v5
       - name: 发布
         uses: softprops/action-gh-release@v1
         with:
@@ -78,3 +78,4 @@ jobs:
             release/*.exe
             release/*.dmg
             release/*.yml
+          body: ${{ steps.generate_draft.outputs.body }}
