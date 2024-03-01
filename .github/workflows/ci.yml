@@ -74,7 +74,7 @@ jobs:
       - name: 生成发布说明
         id: generate_draft
         uses: release-drafter/release-drafter@v5
-      - name: 发布
+      - name: 发布 Release
         uses: softprops/action-gh-release@v1
         with:
           draft: false
@@ -83,3 +83,11 @@ jobs:
             release/*.dmg
             release/*.yml
           body: ${{ steps.generate_draft.outputs.body }}
+      - name: 配置 ossutil
+        uses: manyuanrong/setup-ossutil@v2.0
+        with:
+          endpoint: oss-cn-hangzhou.aliyuncs.com
+          access-key-id: ${{ secrets.ACCESS_KEY_ID }}
+          access-key-secret: ${{ secrets.ACCESS_KEY_SECRET }}
+      - name: 上传文件到 oss
+        run: ossutil cp -rf release oss://like-001/tingkelai-client/${{ needs.Build.outputs.pkg_version }}
