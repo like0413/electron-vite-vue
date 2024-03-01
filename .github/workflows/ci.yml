@@ -69,6 +69,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: tingkelai-${{ matrix.os }}-${{ needs.Build.outputs.pkg_version }}
+          path: release
       - name: 查看构建产物
         run: ls
       - name: 生成发布说明
