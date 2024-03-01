@@ -49,7 +49,7 @@ jobs:
         run: pnpm build
       - name: 获取 package.json 版本
         id: get_version
-        run: echo ::set-output name=version::$(node -p "require('./package.json').version")
+        run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
         shell: bash
       - name: 查看版本
         run: echo ${{ steps.get_version.outputs.version }}
