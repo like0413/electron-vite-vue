@@ -75,6 +75,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            release/${{ needs.Build.outputs.pkg_version }}/*.exe
-            release/${{ needs.Build.outputs.pkg_version }}/*.dmg
-            release/${{ needs.Build.outputs.pkg_version }}/*.yml
+            release/*.exe
+            release/*.dmg
+            release/*.yml
