@@ -22,6 +22,8 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest, macos-latest]
+    outputs:
+      pkg_version: ${{ steps.get_version.outputs.version }}
     steps:
       - run: echo "github_event_name： ${{ github.event_name }}"
       - run: echo "github_ref_type： ${{ github.ref_type }}"
@@ -51,7 +53,7 @@ jobs:
       - name: 上传构建产物
         uses: actions/upload-artifact@v4
         with:
-          name: binary-${{ matrix.os }}
+          name: binary-${{ matrix.os }}-${{ steps.get_version.outputs.version }}
           path: |
             release/${{ steps.get_version.outputs.version }}/*.exe
             release/${{ steps.get_version.outputs.version }}/*.dmg
@@ -76,6 +78,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            release/*.exe
-            release/*.dmg
-            release/*.yml
+            release/${{ needs.Build.outputs.pkg_version }}/*.exe
+            release/${{ needs.Build.outputs.pkg_version }}/*.dmg
+            release/${{ needs.Build.outputs.pkg_version }}/*.yml
