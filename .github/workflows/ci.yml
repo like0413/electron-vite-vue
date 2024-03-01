@@ -45,14 +45,17 @@ jobs:
         run: pnpm install
       - name: 构建
         run: pnpm build
+      - name: 获取 package.json 版本
+        id: get_version
+        run: echo ::set-output name=version::$(node -p "require('./package.json').version")
       - name: 上传构建产物
         uses: actions/upload-artifact@v4
         with:
           name: binary-${{ matrix.os }}
           path: |
-            release/*.exe
-            release/*.dmg
-            release/*.yml
+            release/${{ steps.get_version.outputs.version }}/*.exe
+            release/${{ steps.get_version.outputs.version }}/*.dmg
+            release/${{ steps.get_version.outputs.version }}/*.yml
           retention-days: 5 # 保留5天
 
   Release:
