@@ -4,27 +4,28 @@
 
 name: CI
 on:
-  push:
-    tags:
-      - 'v*.*.*' # 需用 if 限制只对 main 分支生效
-  pull_request:
-    branches:
-      - beta
-    types:
-      - closed
+  push
+  #   tags:
+  #     - 'v*.*.*' # 需用 if 限制只对 main 分支生效
+  # pull_request:
+  #   branches:
+  #     - beta
+  #   types:
+  #     - closed
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   Build:
     runs-on: ${{ matrix.os }}
-    if: github.event.pull_request.merged == true || (github.ref == 'refs/heads/main' && startsWith(github.ref, 'refs/tags/'))
+    # if: github.event.pull_request.merged == true || (startsWith(github.ref, 'refs/tags/'))
     strategy:
       matrix:
         os: [windows-latest, macos-latest]
-    outputs:
-      pkg_version: ${{ steps.get_version.outputs.version }}
+    # outputs:
+    #   pkg_version: ${{ steps.get_version.outputs.version }}
     steps:
+      - run: echo "github_event： ${{ github.event }}"
       - run: echo "github_event_name： ${{ github.event_name }}"
       - run: echo "github_ref_type： ${{ github.ref_type }}"
       - run: echo "github_ref_name： ${{ github.ref_name }}"
@@ -43,45 +44,45 @@ jobs:
         with:
           node-version: 18
           cache: 'pnpm'
-      - name: 安装依赖
-        run: pnpm install
-      - name: 构建
-        run: pnpm build
-      - name: 获取 package.json 版本
-        id: get_version
-        run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
-        shell: bash
-      - name: 查看版本
-        run: echo ${{ steps.get_version.outputs.version }}
-        shell: bash
-      - name: 上传构建产物
-        uses: actions/upload-artifact@v4
-        with:
-          name: binary-${{ matrix.os }}-${{ steps.get_version.outputs.version }}
-          path: |
-            release/${{ steps.get_version.outputs.version }}/*.exe
-            release/${{ steps.get_version.outputs.version }}/*.dmg
-            release/${{ steps.get_version.outputs.version }}/*.yml
-          retention-days: 5 # 保留5天
+      # - name: 安装依赖
+      #   run: pnpm install
+      # - name: 构建
+      #   run: pnpm build
+      # - name: 获取 package.json 版本
+      #   id: get_version
+      #   run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+      #   shell: bash
+      # - name: 查看版本
+      #   run: echo ${{ steps.get_version.outputs.version }}
+      #   shell: bash
+      # - name: 上传构建产物
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: binary-${{ matrix.os }}-${{ steps.get_version.outputs.version }}
+      #     path: |
+      #       release/${{ steps.get_version.outputs.version }}/*.exe
+      #       release/${{ steps.get_version.outputs.version }}/*.dmg
+      #       release/${{ steps.get_version.outputs.version }}/*.yml
+      #     retention-days: 5 # 保留5天
 
-  Release:
-    runs-on: ${{ matrix.os }}
-    if: startsWith(github.ref, 'refs/tags/') && github.ref == 'refs/heads/main'
-    strategy:
-      matrix:
-        os: [windows-latest, macos-latest]
-    needs: Build
-    steps:
-      - name: 下载构建产物
-        uses: actions/download-artifact@v4
-        with:
-          name: binary-${{ matrix.os }}
-      - name: 查看构建产物
-        run: ls
-      - name: 发布
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            release/${{ needs.Build.outputs.pkg_version }}/*.exe
-            release/${{ needs.Build.outputs.pkg_version }}/*.dmg
-            release/${{ needs.Build.outputs.pkg_version }}/*.yml
+  # Release:
+  #   runs-on: ${{ matrix.os }}
+  #   if: startsWith(github.ref, 'refs/tags/') && github.ref == 'refs/heads/main'
+  #   strategy:
+  #     matrix:
+  #       os: [windows-latest, macos-latest]
+  #   needs: Build
+  #   steps:
+  #     - name: 下载构建产物
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: binary-${{ matrix.os }}
+  #     - name: 查看构建产物
+  #       run: ls
+  #     - name: 发布
+  #       uses: softprops/action-gh-release@v1
+  #       with:
+  #         files: |
+  #           release/${{ needs.Build.outputs.pkg_version }}/*.exe
+  #           release/${{ needs.Build.outputs.pkg_version }}/*.dmg
+  #           release/${{ needs.Build.outputs.pkg_version }}/*.yml
