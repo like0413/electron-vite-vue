@@ -15,7 +15,7 @@ on:
 env:
   GITHUB_TOKEN: ${{ secrets.ACTION_GITHUB_TOKEN }}
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref_type}}
   cancel-in-progress: true
 
 jobs:
@@ -24,68 +24,58 @@ jobs:
     if: github.event.pull_request.merged == true || startsWith(github.ref, 'refs/tags/')
     strategy:
       matrix:
-        os: [windows-latest, macos-latest]
-    outputs:
-      pkg_version: ${{ steps.get_version.outputs.version }}
+        os: [windows-latest, macos-latest, ubuntu-latest]
     steps:
       - name: 检出代码
         uses: actions/checkout@v4
+
       - name: 设置 pnpm
         uses: pnpm/action-setup@v3
         with:
           version: 8
+
       - name: 设置 node
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
+
       - name: 安装依赖
         run: pnpm install
+
       - name: 构建
         run: pnpm build
+
       - name: 获取 package.json 版本
         id: get_version
         run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
         shell: bash
-      - name: 上传构建产物
-        uses: actions/upload-artifact@v4
-        with:
-          name: tingkelai-${{ matrix.os }}-${{ steps.get_version.outputs.version }}
-          path: |
-            release/${{ steps.get_version.outputs.version }}/*.exe
-            release/${{ steps.get_version.outputs.version }}/*.dmg
-            release/${{ steps.get_version.outputs.version }}/*.yml
-          retention-days: 5 # 保留5天
 
-  Release:
-    runs-on: ${{ matrix.os }}
-    if: startsWith(github.ref, 'refs/tags/')
-    strategy:
-      matrix:
-        os: [windows-latest, macos-latest]
-    needs: Build
-    steps:
-      - name: 下载构建产物
-        uses: actions/download-artifact@v4
-        with:
-          name: tingkelai-${{ matrix.os }}-${{ needs.Build.outputs.pkg_version }}
-          path: release
-      - name: 查看构建产物
-        run: ls -R
-      - name: 生成发布说明
-        id: generate_draft
-        uses: release-drafter/release-drafter@v5
-      - name: 发布 Release
-        uses: softprops/action-gh-release@v1
-        with:
-          draft: false
-          files: release/*
-          body: ${{ steps.generate_draft.outputs.body }}
+      - name: 获取上传目录
+        id: get_dir
+        run: echo "dir=$(if [[ '${{ startsWith(github.ref, 'refs/tags/') }}' == 'true' ]]; then echo 'prod'; else echo 'beta'; fi)" >> $GITHUB_OUTPUT
+        shell: bash
+
       - name: 配置 ossutil
         uses: yizhoumo/setup-ossutil@v2
         with:
+          ossutil-version: '1.7.19' # latest
           endpoint: oss-cn-hangzhou.aliyuncs.com
           access-key-id: ${{ secrets.ACCESS_KEY_ID }}
           access-key-secret: ${{ secrets.ACCESS_KEY_SECRET }}
+
       - name: 上传文件到 oss
-        run: ossutil cp -rf release oss://like-001/tingkelai-client/${{ needs.Build.outputs.pkg_version }}
+        run: ossutil cp -rf release oss://like-001/tingkelai-client/${{ steps.get_dir.outputs.dir }}/
+
+      - name: 生成发布说明
+        if: startsWith(github.ref, 'refs/tags/')
+        id: generate_draft
+        uses: release-drafter/release-drafter@v5
+
+      - name: 发布 Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: false
+          files: release/${{ steps.get_version.outputs.version }}/*
+          body: ${{ steps.generate_draft.outputs.body }}
