@@ -71,7 +71,7 @@ jobs:
           name: tingkelai-${{ matrix.os }}-${{ needs.Build.outputs.pkg_version }}
           path: release
       - name: 查看构建产物
-        run: ls
+        run: ls -R
       - name: 生成发布说明
         id: generate_draft
         uses: release-drafter/release-drafter@v5
@@ -82,7 +82,7 @@ jobs:
           files: release/*
           body: ${{ steps.generate_draft.outputs.body }}
       - name: 配置 ossutil
-        uses: manyuanrong/setup-ossutil@v2.0
+        uses: yizhoumo/setup-ossutil@v2
         with:
           endpoint: oss-cn-hangzhou.aliyuncs.com
           access-key-id: ${{ secrets.ACCESS_KEY_ID }}
