@@ -79,10 +79,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           draft: false
-          files: |
-            release/*.exe
-            release/*.dmg
-            release/*.yml
+          files: release/*
           body: ${{ steps.generate_draft.outputs.body }}
       - name: 配置 ossutil
         uses: manyuanrong/setup-ossutil@v2.0
