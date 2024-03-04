@@ -1,6 +1,6 @@
 # alpha、beta、main 三个分支
 # 在 alpha 本地开发、提交到 beta 后自动构建作为测试用（但不发布）
-# 再合并到 main（不自动构建），本地切换到 main 分支，使用 npm version 打标签，然后推送（自动构建并发布）
+# 再合并到 main（不自动构建），本地切换到 main 分支，使用 npm version 打标签，然后推送（自动构建并发布）.
 
 name: CI
 on:
