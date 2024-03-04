@@ -25,23 +25,34 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest, macos-latest, ubuntu-latest]
-    permissions:
-      contents: write
-      pull-requests: write
     steps:
       - name: 检出代码
         uses: actions/checkout@v4
 
-      - name: 设置 pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 8
-
-      - name: 设置 node
+      - name: 安装 node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
+
+      - name: 安装 pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+          run_install: false
+
+      - name: 获取 pnpm store 目录
+        id: get-store-path
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
+
+      - name: 设置 pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.get-store-path.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
       - name: 安装依赖
         run: pnpm install
@@ -50,9 +61,9 @@ jobs:
         run: pnpm build
 
       - name: 获取 package.json 版本
-        id: get_version
-        run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+        id: get-version
         shell: bash
+        run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
 
       - name: 获取上传目录
         id: get_dir
@@ -80,5 +91,5 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           draft: false
-          files: release/${{ steps.get_version.outputs.version }}/*
+          files: release/${{ steps.get-version.outputs.version }}/*
           body: ${{ steps.generate_draft.outputs.body }}
