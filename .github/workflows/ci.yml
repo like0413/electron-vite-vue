@@ -63,11 +63,11 @@ jobs:
       - name: 获取 package.json 版本
         id: get-version
         shell: bash
-        run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+        run: echo "VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
 
       - name: 获取上传目录
-        id: get_dir
-        run: echo "dir=$(if [[ '${{ startsWith(github.ref, 'refs/tags/') }}' == 'true' ]]; then echo 'prod'; else echo 'beta'; fi)" >> $GITHUB_OUTPUT
+        id: get-dir
+        run: echo "DIR=$(if [[ '${{ startsWith(github.ref, 'refs/tags/') }}' == 'true' ]]; then echo 'prod'; else echo 'beta'; fi)" >> $GITHUB_OUTPUT
         shell: bash
 
       - name: 配置 ossutil
@@ -79,7 +79,7 @@ jobs:
           access-key-secret: ${{ secrets.ACCESS_KEY_SECRET }}
 
       - name: 上传文件到 oss
-        run: ossutil cp -rf release oss://like-001/tingkelai-client/${{ steps.get_dir.outputs.dir }}/
+        run: ossutil cp -rf release oss://like-001/tingkelai-client/${{ steps.get-dir.outputs.DIR }}/
 
       - name: 生成发布说明
         if: startsWith(github.ref, 'refs/tags/')
@@ -91,5 +91,5 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           draft: false
-          files: release/${{ steps.get-version.outputs.version }}/*
+          files: release/${{ steps.get-version.outputs.VERSION }}/*
           body: ${{ steps.generate_draft.outputs.body }}
