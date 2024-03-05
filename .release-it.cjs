@@ -21,7 +21,6 @@ module.exports = {
             type: 'fix',
             section: 'Bug Fixes',
           },
-          {},
         ],
       },
       infile: 'CHANGELOG.md',

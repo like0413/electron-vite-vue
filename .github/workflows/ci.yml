@@ -29,48 +29,48 @@ jobs:
       - name: 检出代码
         uses: actions/checkout@v4
 
-      # - name: 安装 pnpm
-      #   uses: pnpm/action-setup@v3
-      #   with:
-      #     version: 8
+      - name: 安装 pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
 
-      # - name: 安装 node
-      #   uses: actions/setup-node@v4
-      #   with:
-      #     node-version: 20
-      #     cache: 'pnpm' # 不生效，暂未找到原因
+      - name: 安装 node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm' # 不生效，暂未找到原因
 
-      # - name: 安装依赖
-      #   run: pnpm install
+      - name: 安装依赖
+        run: pnpm install
 
-      # - name: 构建
-      #   run: pnpm build
+      - name: 构建
+        run: pnpm build
 
-      # - name: 获取 package.json 版本
-      #   id: get-version
-      #   shell: bash
-      #   run: echo "VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+      - name: 获取 package.json 版本
+        id: get-version
+        shell: bash
+        run: echo "VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
 
-      # - name: 获取上传目录
-      #   id: get-dir
-      #   run: echo "DIR=$(if [[ '${{ startsWith(github.ref, 'refs/tags/') }}' == 'true' ]]; then echo 'prod'; else echo 'beta'; fi)" >> $GITHUB_OUTPUT
-      #   shell: bash
+      - name: 获取上传目录
+        id: get-dir
+        run: echo "DIR=$(if [[ '${{ startsWith(github.ref, 'refs/tags/') }}' == 'true' ]]; then echo 'prod'; else echo 'beta'; fi)" >> $GITHUB_OUTPUT
+        shell: bash
 
-      # - name: 配置 ossutil
-      #   uses: yizhoumo/setup-ossutil@v2
-      #   with:
-      #     ossutil-version: '1.7.19' # latest
-      #     endpoint: oss-cn-hangzhou.aliyuncs.com
-      #     access-key-id: ${{ secrets.ACCESS_KEY_ID }}
-      #     access-key-secret: ${{ secrets.ACCESS_KEY_SECRET }}
+      - name: 配置 ossutil
+        uses: yizhoumo/setup-ossutil@v2
+        with:
+          ossutil-version: '1.7.19' # latest
+          endpoint: oss-cn-hangzhou.aliyuncs.com
+          access-key-id: ${{ secrets.ACCESS_KEY_ID }}
+          access-key-secret: ${{ secrets.ACCESS_KEY_SECRET }}
 
-      # - name: 上传文件到 oss
-      #   run: ossutil cp -rf release oss://like-001/tingkelai-client/${{ steps.get-dir.outputs.DIR }}/
+      - name: 上传文件到 oss
+        run: ossutil cp -rf release oss://like-001/tingkelai-client/${{ steps.get-dir.outputs.DIR }}/
 
-      # - name: 发布 Release
-      #   if: startsWith(github.ref, 'refs/tags/')
-      #   uses: softprops/action-gh-release@v1
-      #   with:
-      #     draft: false
-      #     files: release/${{ steps.get-version.outputs.VERSION }}/*
-      #     body_path: CHANGELOG.md
+      - name: 发布 Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: false
+          files: release/${{ steps.get-version.outputs.VERSION }}/*
+          body_path: CHANGELOG.md
