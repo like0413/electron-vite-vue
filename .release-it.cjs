@@ -1,9 +1,9 @@
 module.exports = {
   hooks: {},
   git: {
-    // changelog: 'git log --pretty=format:"* %s (%h)" ${from}...${to}',
-    requireCommits: true, // 如果设为true，则需要有新的提交才可以发布
-    commit: false, // 如果设置为true，则创建一个新的 git commit
+    changelog: 'git log --pretty=format:"* %s (%h)" ${from}...${to}',
+    requireCommits: true,
+    commit: true, // 自动为package.json的版本号变化创建一个提交
     commitMessage: 'chore(release): ${version}',
     tag: true,
     tagAnnotation: 'Release ${version}',
