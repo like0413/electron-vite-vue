@@ -8,6 +8,14 @@ module.exports = {
     tag: true,
     tagAnnotation: 'Release v${version}',
   },
+  plugins: {
+    '@release-it/conventional-changelog': {
+      preset: {
+        name: 'angular',
+      },
+      infile: 'CHANGELOG.md',
+    },
+  },
   npm: {
     publish: false,
   },
