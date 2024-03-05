@@ -12,17 +12,6 @@ module.exports = {
     '@release-it/conventional-changelog': {
       preset: {
         name: 'conventionalcommits',
-        types: [
-          {
-            type: 'feat',
-            section: 'Features',
-          },
-          {
-            type: 'fix',
-            section: 'Bug Fixes',
-          },
-          {},
-        ],
       },
       infile: 'CHANGELOG.md',
     },
