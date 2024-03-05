@@ -3,9 +3,10 @@
  */
 {
   "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
-  "appId": "YourAppID",
+  "appId": "com.tingkelai.app",
   "asar": true,
   "productName": "tingkelai",
+  "copyright": "Copyright © 2024 ${author}",
   "directories": {
     "output": "release/${version}"
   },
