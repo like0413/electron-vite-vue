@@ -1,5 +1,12 @@
 
 
+### [0.0.11](https://github.com/like0413/electron-vite-vue/compare/v0.0.10...v0.0.11) (2024-03-05)
+
+
+### Bug Fixes
+
+* **haha:** 完成自动发布 ([1971805](https://github.com/like0413/electron-vite-vue/commit/19718052d4cf13f5dda8a3403b978134c3e08e09))
+
 ### [0.0.10](https://github.com/like0413/electron-vite-vue/compare/v0.0.9...v0.0.10) (2024-03-05)
 
 
