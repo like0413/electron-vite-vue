@@ -19,7 +19,8 @@
     "target": [
       "dmg"
     ],
-    "artifactName": "${productName}-Mac-${version}-Installer.${ext}"
+    "artifactName": "${productName}-Mac-${version}-Installer.${ext}",
+    "icon": "build/icon.png"
   },
   "win": {
     "target": [
@@ -30,7 +31,8 @@
         ]
       }
     ],
-    "artifactName": "${productName}-Windows-${version}-Setup.${ext}"
+    "artifactName": "${productName}-Windows-${version}-Setup.${ext}",
+    "icon": "build/icon.ico"
   },
   "nsis": {
     "oneClick": false,
@@ -40,12 +42,14 @@
     "removeDefaultUninstallWelcomePage": false,
     "createDesktopShortcut": true,
     "createStartMenuShortcut": true,
-    "shortcutName": "听客来"
+    "shortcutName": "听客来",
+    "include": "build/installer.nsh"
   },
   "linux": {
     "target": [
       "AppImage"
     ],
-    "artifactName": "${productName}-Linux-${version}.${ext}"
+    "artifactName": "${productName}-Linux-${version}.${ext}",
+    "icon": "build/icon.png"
   }
 }
