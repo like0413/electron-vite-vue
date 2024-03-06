@@ -15,6 +15,7 @@
     "dist-electron"
   ],
   "mac": {
+    "category": "public.app-category.medical",
     "target": [
       "dmg"
     ],
@@ -35,7 +36,11 @@
     "oneClick": false,
     "perMachine": false,
     "allowToChangeInstallationDirectory": true,
-    "deleteAppDataOnUninstall": false
+    "deleteAppDataOnUninstall": false,
+    "removeDefaultUninstallWelcomePage": false,
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "shortcutName": "听客来"
   },
   "linux": {
     "target": [
