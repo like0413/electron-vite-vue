@@ -17,6 +17,12 @@ devDependencies:
   electron-builder:
     specifier: ^24.9.1
     version: 24.12.0
+  electron-log:
+    specifier: ^5.1.1
+    version: 5.1.1
+  electron-updater:
+    specifier: ^6.1.8
+    version: 6.1.8
   release-it:
     specifier: ^17.1.1
     version: 17.1.1(typescript@5.3.3)
@@ -960,6 +966,7 @@ packages:
   /@xmldom/xmldom@0.8.10:
     resolution: {integrity: sha512-2WALfTl4xo2SkGCYRt6rDTFfk9R1czmBvUQy12gK2KuRKIpWEhcbbzy8EZXtz/jkRqHX8bFEc6FC1HjX4TUWYw==}
     engines: {node: '>=10.0.0'}
+    requiresBuild: true
     dev: true
 
   /JSONStream@1.3.5:
@@ -1194,6 +1201,7 @@ packages:
 
   /base64-js@1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
+    requiresBuild: true
     dev: true
 
   /basic-ftp@5.0.5:
@@ -2186,6 +2194,11 @@ packages:
       - supports-color
     dev: true
 
+  /electron-log@5.1.1:
+    resolution: {integrity: sha512-If7HU4Slbh2xfjOXOLxifkbgu6HmWDNJyXPLW+XNTOHMfFKisg0trA3d/7syyu25S+lHosfsd0VMfDSjGn1+Pw==}
+    engines: {node: '>= 14'}
+    dev: true
+
   /electron-publish@24.9.4:
     resolution: {integrity: sha512-FghbeVMfxHneHjsG2xUSC0NMZYWOOWhBxfZKPTbibcJ0CjPH0Ph8yb5CUO62nqywXfA5u1Otq6K8eOdOixxmNg==}
     dependencies:
@@ -2196,6 +2209,21 @@ packages:
       fs-extra: 10.1.0
       lazy-val: 1.0.5
       mime: 2.6.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
+  /electron-updater@6.1.8:
+    resolution: {integrity: sha512-hhOTfaFAd6wRHAfUaBhnAOYc+ymSGCWJLtFkw4xJqOvtpHmIdNHnXDV9m1MHC+A6q08Abx4Ykgyz/R5DGKNAMQ==}
+    dependencies:
+      builder-util-runtime: 9.2.3
+      fs-extra: 10.1.0
+      js-yaml: 4.1.0
+      lazy-val: 1.0.5
+      lodash.escaperegexp: 4.1.2
+      lodash.isequal: 4.5.0
+      semver: 7.6.0
+      tiny-typed-emitter: 2.1.0
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -3736,6 +3764,10 @@ packages:
 
   /lodash.escaperegexp@4.1.2:
     resolution: {integrity: sha512-TM9YBvyC84ZxE3rgfefxUWiQKLilstD6k7PTGt6wfbtXF8ixIJLOL3VYyV/z+ZiPLsVxAsKAFVwWlWeb2Y8Yyw==}
+    dev: true
+
+  /lodash.isequal@4.5.0:
+    resolution: {integrity: sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==}
     dev: true
 
   /lodash.ismatch@4.4.0:
@@ -5329,6 +5361,10 @@ packages:
     resolution: {integrity: sha512-w89qg7PI8wAdvX60bMDP+bFoD5Dvhm9oLheFp5O4a2QF0cSBGsBX4qZmadPMvVqlLJBBci+WqGGOAPvcDeNSVg==}
     dev: true
 
+  /tiny-typed-emitter@2.1.0:
+    resolution: {integrity: sha512-qVtvMxeXbVej0cQWKqVSSAHmKZEHAvxdF8HEUBFWts8h+xEo5m/lEiPakuyZ3BnCBjOD8i24kzNOiOLLgsSxhA==}
+    dev: true
+
   /tmp-promise@3.0.3:
     resolution: {integrity: sha512-RwM7MoPojPxsOBYnyd2hy0bxtIlVrihNs9pj5SUvY8Zz1sQcQG2tG1hSr8PDxfgEB8RNKDhqbIlroIarSNDNsQ==}
     dependencies:
@@ -5792,6 +5828,7 @@ packages:
   /xmlbuilder@15.1.1:
     resolution: {integrity: sha512-yMqGBqtXyeN1e3TGYvgNgDVZ3j84W4cwkOXQswghol6APgZWaff9lnbvN7MHYJOiXsvGPXtjTYJEiC9J2wv9Eg==}
     engines: {node: '>=8.0'}
+    requiresBuild: true
     dev: true
 
   /xtend@4.0.2:

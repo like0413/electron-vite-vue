@@ -24,7 +24,7 @@ jobs:
     if: github.event.pull_request.merged == true || startsWith(github.ref, 'refs/tags/')
     strategy:
       matrix:
-        os: [windows-latest, macos-latest, ubuntu-latest]
+        os: [windows-latest, macos-latest]
     steps:
       - name: 检出代码
         uses: actions/checkout@v4
@@ -65,7 +65,9 @@ jobs:
           access-key-secret: ${{ secrets.ACCESS_KEY_SECRET }}
 
       - name: 上传文件到 oss
-        run: ossutil cp -rf release oss://like-001/tingkelai-client/${{ steps.get-dir.outputs.DIR }}/
+        run: |
+          ossutil cp -rf release oss://like-001/tingkelai-client/${{ steps.get-dir.outputs.DIR }}/
+          ossutil cp -rf release/${{steps.get-version.outputs.VERSION}} oss://like-001/tingkelai-client/${{ steps.get-dir.outputs.DIR }}/latest
 
       - name: 发布 Release
         if: startsWith(github.ref, 'refs/tags/')
