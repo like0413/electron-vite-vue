@@ -1,29 +1,20 @@
-import dotenv from 'dotenv'
-import fs from 'fs'
-
-function loadEnv() {
-  let envPath = ''
+function getAppUrl() {
+  let url = ''
 
   switch (process.env.npm_lifecycle_event) {
     case 'dev':
     case 'build:alpha':
-      envPath = '.env.alpha'
+      url = 'https://alpha.tingkelai.com/tingkelai'
       break
     case 'build:beta':
-      envPath = '.env.beta'
+      url = 'https://beta.tingkelai.com/tingkelai'
       break
     case 'build:prod':
-      envPath = '.env.prod'
+      url = 'https://www.tingkelai.com/tingkelai'
       break
   }
 
-  if (fs.existsSync(envPath)) {
-    const envConfig = dotenv.parse(fs.readFileSync(envPath))
-    return envConfig
-  } else {
-    return {}
-  }
+  return url
 }
 
-
-export { loadEnv }
+export { getAppUrl }

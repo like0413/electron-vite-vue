@@ -1,33 +1,6 @@
-const dotenv = require('dotenv')
-const fs = require('fs')
-
-function loadEnv() {
-  let envPath = ''
-
-  switch (process.env.npm_lifecycle_event) {
-    case 'dev':
-    case 'build:alpha':
-      envPath = '.env.alpha'
-      break
-    case 'build:beta':
-      envPath = '.env.beta'
-      break
-    case 'build:prod':
-      envPath = '.env.prod'
-      break
-  }
-
-  if (fs.existsSync(envPath)) {
-    const envConfig = dotenv.parse(fs.readFileSync(envPath))
-    return envConfig
-  } else {
-    return {}
-  }
-}
-
-const { ENV } = loadEnv()
-
-const appId = ENV === 'prod' ? 'com.tingkelai.app' : 'com.beta.tingkelai.app'
+const ENV = process.env.npm_lifecycle_event.split(':')[1] ?? 'dev'
+const appId = 'com.' + ENV + '.tingkelai.app'
+const shortcutName = ENV === 'prod' ? '听客来' : '听客来 ' + ENV.charAt(0).toUpperCase() + ENV.slice(1)
 
 module.exports = {
   appId,
@@ -60,7 +33,7 @@ module.exports = {
     removeDefaultUninstallWelcomePage: false,
     createDesktopShortcut: true,
     createStartMenuShortcut: true,
-    shortcutName: '听客来',
+    shortcutName,
     // "include": "build/installer.nsh"
   },
   linux: {

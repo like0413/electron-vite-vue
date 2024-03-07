@@ -2,11 +2,11 @@ import { app, BrowserWindow, shell, ipcMain } from 'electron'
 import { release } from 'node:os'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { loadEnv } from './helpers'
+import { getAppUrl } from './helpers'
 import { autoUpdateApp } from './update'
 
-const { VITE_APP_URL } = loadEnv()
-console.log('VITE_APP_URL: ', VITE_APP_URL);
+const APP_URL = getAppUrl()
+console.log('APP_URL: ', APP_URL)
 
 globalThis.__filename = fileURLToPath(import.meta.url)
 globalThis.__dirname = dirname(__filename)
