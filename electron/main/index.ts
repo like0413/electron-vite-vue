@@ -3,7 +3,7 @@ import { release } from 'node:os'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { loadEnv } from './helpers'
-// import { autoUpdateApp } from './update'
+import { autoUpdateApp } from './update'
 
 const { VITE_APP_URL } = loadEnv()
 console.log('VITE_APP_URL: ', VITE_APP_URL);
@@ -78,7 +78,7 @@ async function createWindow() {
 
 app.whenReady().then(() => {
   createWindow()
-  // autoUpdateApp()
+  autoUpdateApp()
 })
 
 app.on('window-all-closed', () => {
