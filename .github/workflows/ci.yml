@@ -67,7 +67,8 @@ jobs:
       - name: 上传文件到 oss
         shell: bash
         run: |
-          ossutil cp -rf release/${{steps.get-version.outputs.VERSION}} oss://like-001/tingkelai-client/${{ steps.get-env.outputs.ENV }}/latest
+          ossutil rm -rf oss://like-001/tingkelai-client/${{ steps.get-env.outputs.ENV }}/latest/
+          ossutil cp -rf release/${{steps.get-version.outputs.VERSION}} oss://like-001/tingkelai-client/${{ steps.get-env.outputs.ENV }}/latest/
           if [[ "${{ steps.get-env.outputs.ENV }}" == "prod" ]]; then
             ossutil cp -rf release oss://like-001/tingkelai-client/${{ steps.get-env.outputs.ENV }}/
           fi
