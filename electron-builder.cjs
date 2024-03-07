@@ -1,6 +1,4 @@
 const ENV = process.env.npm_lifecycle_event.split(':')[1] ?? 'dev'
-console.log('process.env.npm_lifecycle_event: ', process.env);
-console.log('ENV: ', ENV);
 const appId = 'com.' + ENV + '.tingkelai.app'
 const shortcutName = ENV === 'prod' ? '听客来' : '听客来 ' + ENV.charAt(0).toUpperCase() + ENV.slice(1)
 
