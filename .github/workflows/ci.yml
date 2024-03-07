@@ -43,18 +43,13 @@ jobs:
       - name: 安装依赖
         run: pnpm install
 
+      - name: 获取构建环境（上传目录）
+        id: get-env
+        run: echo "ENV=$(if [[ '${{ startsWith(github.ref, 'refs/tags/') }}' == 'true' ]]; then echo 'prod'; else echo 'beta'; fi)" >> $GITHUB_OUTPUT
+        shell: bash
+
       - name: 构建
-        run: pnpm build
-
-      - name: 获取 package.json 版本
-        id: get-version
-        shell: bash
-        run: echo "VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
-
-      - name: 获取上传目录
-        id: get-dir
-        run: echo "DIR=$(if [[ '${{ startsWith(github.ref, 'refs/tags/') }}' == 'true' ]]; then echo 'prod'; else echo 'beta'; fi)" >> $GITHUB_OUTPUT
-        shell: bash
+        run: pnpm build:${{ steps.get-env.outputs.ENV}}
 
       - name: 配置 ossutil
         uses: yizhoumo/setup-ossutil@v2
@@ -64,12 +59,17 @@ jobs:
           access-key-id: ${{ secrets.ACCESS_KEY_ID }}
           access-key-secret: ${{ secrets.ACCESS_KEY_SECRET }}
 
+      - name: 获取 package.json 版本号
+        id: get-version
+        shell: bash
+        run: echo "VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
       - name: 上传文件到 oss
         shell: bash
         run: |
-          ossutil cp -rf release/${{steps.get-version.outputs.VERSION}} oss://like-001/tingkelai-client/${{ steps.get-dir.outputs.DIR }}/latest
-          if [[ "${{ steps.get-dir.outputs.DIR }}" == "prod" ]]; then
-            ossutil cp -rf release oss://like-001/tingkelai-client/${{ steps.get-dir.outputs.DIR }}/
+          ossutil cp -rf release/${{steps.get-version.outputs.VERSION}} oss://like-001/tingkelai-client/${{ steps.get-env.outputs.ENV }}/latest
+          if [[ "${{ steps.get-env.outputs.ENV }}" == "prod" ]]; then
+            ossutil cp -rf release oss://like-001/tingkelai-client/${{ steps.get-env.outputs.ENV }}/
           fi
 
       - name: 发布 Release
