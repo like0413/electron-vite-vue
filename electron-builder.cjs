@@ -1,11 +1,12 @@
 const ENV = process.env.npm_lifecycle_event.split(':')[1] ?? 'dev'
 const appId = 'com.' + ENV + '.tingkelai.app'
+const productName = ENV === 'prod' ? 'tingkelai' : 'tingkelai-' + ENV
 const shortcutName = ENV === 'prod' ? '听客来' : '听客来 ' + ENV.charAt(0).toUpperCase() + ENV.slice(1)
 
 module.exports = {
   appId,
   asar: true,
-  productName: 'tingkelai',
+  productName,
   copyright: 'Copyright © 2024 ${author}',
   directories: {
     output: 'release/${version}',
