@@ -17,9 +17,9 @@
     "dev": "vite",
     "preview": "vite preview",
     "build": "vue-tsc --noEmit && vite build && electron-builder",
-    "build:alpha": "pnpm build",
-    "build:beta": "pnpm build",
-    "build:prod": "pnpm build",
+    "build:alpha": "vue-tsc --noEmit && vite build && electron-builder",
+    "build:beta": "vue-tsc --noEmit && vite build && electron-builder",
+    "build:prod": "vue-tsc --noEmit && vite build && electron-builder",
     "release:alpha": "release-it --preRelease=alpha",
     "release:beta": "release-it --preRelease=beta",
     "release:prod": "release-it"
