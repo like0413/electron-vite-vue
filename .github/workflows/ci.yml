@@ -1,87 +1,78 @@
-# alpha、beta、main 三个分支
-# 在 alpha 本地开发、提交到 beta 后自动构建作为测试用（但不发布）
-# 再合并到 main（不自动构建），本地切换到 main 分支，使用 npm version 打标签，然后推送（自动构建并发布）
+# alpha、beta、main 三个分支.
+# 在 alpha 本地开发、提交到 beta 后自动构建作为测试用（但不发布）.
+# 再合并到 main（不自动构建），本地切换到 main 分支，使用 npm version 打标签，然后推送（自动构建并发布）.
 
 name: CI
 on:
   push:
     tags:
-      - 'v*.*.*' # 需用 if 限制只对 main 分支生效
+      - 'v*.*.*'
   pull_request:
     branches:
       - beta
     types:
       - closed
 env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  GITHUB_TOKEN: ${{ secrets.ACTION_GITHUB_TOKEN }}
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_type}}
+  cancel-in-progress: true
 
 jobs:
   Build:
     runs-on: ${{ matrix.os }}
-    if: github.event.pull_request.merged == true || (github.ref == 'refs/heads/main' && startsWith(github.ref, 'refs/tags/'))
+    if: github.event.pull_request.merged == true || startsWith(github.ref, 'refs/tags/')
     strategy:
       matrix:
         os: [windows-latest, macos-latest]
-    outputs:
-      pkg_version: ${{ steps.get_version.outputs.version }}
     steps:
-      - run: echo "github_event_name： ${{ github.event_name }}"
-      - run: echo "github_ref_type： ${{ github.ref_type }}"
-      - run: echo "github_ref_name： ${{ github.ref_name }}"
-      - run: echo "github_ref： ${{ github.ref }}"
-      - run: echo "github_base_ref： ${{ github.base_ref }}"
-      - run: echo "github_head_ref： ${{ github.head_ref }}"
-
       - name: 检出代码
         uses: actions/checkout@v4
-      - name: 设置 pnpm
+
+      - name: 安装 pnpm
         uses: pnpm/action-setup@v3
         with:
           version: 8
-      - name: 设置 node
+
+      - name: 安装 node
         uses: actions/setup-node@v4
         with:
-          node-version: 18.x
-          cache: 'pnpm'
+          node-version: 20
+          cache: 'pnpm' # 不生效，暂未找到原因
+
       - name: 安装依赖
         run: pnpm install
+
       - name: 构建
         run: pnpm build
-      - name: 获取 package.json 版本
-        id: get_version
-        run: echo ::set-output name=version::$(node -p "require('./package.json').version")
-        shell: bash
-      - name: 查看版本
-        run: echo ${{ steps.get_version.outputs.version }}
-        shell: bash
-      - name: 上传构建产物
-        uses: actions/upload-artifact@v4
-        with:
-          name: binary-${{ matrix.os }}-${{ steps.get_version.outputs.version }}
-          path: |
-            release/${{ steps.get_version.outputs.version }}/*.exe
-            release/${{ steps.get_version.outputs.version }}/*.dmg
-            release/${{ steps.get_version.outputs.version }}/*.yml
-          retention-days: 5 # 保留5天
 
-  Release:
-    runs-on: ${{ matrix.os }}
-    if: startsWith(github.ref, 'refs/tags/') && github.ref == 'refs/heads/main'
-    strategy:
-      matrix:
-        os: [windows-latest, macos-latest]
-    needs: Build
-    steps:
-      - name: 下载构建产物
-        uses: actions/download-artifact@v4
+      - name: 获取 package.json 版本
+        id: get-version
+        shell: bash
+        run: echo "VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+      - name: 获取上传目录
+        id: get-dir
+        run: echo "DIR=$(if [[ '${{ startsWith(github.ref, 'refs/tags/') }}' == 'true' ]]; then echo 'prod'; else echo 'beta'; fi)" >> $GITHUB_OUTPUT
+        shell: bash
+
+      - name: 配置 ossutil
+        uses: yizhoumo/setup-ossutil@v2
         with:
-          name: binary-${{ matrix.os }}
-      - name: 查看构建产物
-        run: ls
-      - name: 发布
+          ossutil-version: '1.7.19' # latest
+          endpoint: oss-cn-hangzhou.aliyuncs.com
+          access-key-id: ${{ secrets.ACCESS_KEY_ID }}
+          access-key-secret: ${{ secrets.ACCESS_KEY_SECRET }}
+
+      - name: 上传文件到 oss
+        run: |
+          ossutil cp -rf release oss://like-001/tingkelai-client/${{ steps.get-dir.outputs.DIR }}/
+          ossutil cp -rf release/${{steps.get-version.outputs.VERSION}} oss://like-001/tingkelai-client/${{ steps.get-dir.outputs.DIR }}/latest
+
+      - name: 发布 Release
+        if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
         with:
-          files: |
-            release/${{ needs.Build.outputs.pkg_version }}/*.exe
-            release/${{ needs.Build.outputs.pkg_version }}/*.dmg
-            release/${{ needs.Build.outputs.pkg_version }}/*.yml
+          draft: false
+          files: release/${{ steps.get-version.outputs.VERSION }}/*
+          body_path: CHANGELOG.md

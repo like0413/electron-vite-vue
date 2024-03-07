@@ -1,11 +1,9 @@
-/**
- * @see https://www.electron.build/configuration/configuration
- */
 {
   "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
-  "appId": "YourAppID",
+  "appId": "com.tingkelai.app",
   "asar": true,
-  "productName": "YourAppName",
+  "productName": "tingkelai",
+  "copyright": "Copyright © 2024 ${author}",
   "directories": {
     "output": "release/${version}"
   },
@@ -14,6 +12,7 @@
     "dist-electron"
   ],
   "mac": {
+    "category": "public.app-category.medical",
     "target": [
       "dmg"
     ],
@@ -34,12 +33,21 @@
     "oneClick": false,
     "perMachine": false,
     "allowToChangeInstallationDirectory": true,
-    "deleteAppDataOnUninstall": false
+    "deleteAppDataOnUninstall": false,
+    "removeDefaultUninstallWelcomePage": false,
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "shortcutName": "听客来"
+    // "include": "build/installer.nsh"
   },
   "linux": {
     "target": [
       "AppImage"
     ],
     "artifactName": "${productName}-Linux-${version}.${ext}"
+  },
+  "publish": {
+    "provider": "generic",
+    "url": "https://like-001.oss-cn-hangzhou.aliyuncs.com/tingkelai-client/prod/latest"
   }
 }

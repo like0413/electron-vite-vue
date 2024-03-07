@@ -1,33 +1,22 @@
-## 2022-10-03
 
-[v2.1.0](https://github.com/electron-vite/electron-vite-vue/pull/267)
 
-- `vite-electron-plugin` is Fast, and WYSIWYG. 🌱
-- last-commit: db2e830 v2.1.0: use `vite-electron-plugin` instead `vite-plugin-electron`
+### [0.0.12](https://github.com/like0413/electron-vite-vue/compare/v0.0.11...v0.0.12) (2024-03-07)
 
-## 2022-06-04
+### [0.0.11](https://github.com/like0413/electron-vite-vue/compare/v0.0.10...v0.0.11) (2024-03-05)
 
-[v2.0.0](https://github.com/electron-vite/electron-vite-vue/pull/156)
 
-- 🖖 Based on the `vue-ts` template created by `npm create vite`, integrate `vite-plugin-electron`
-- ⚡️ More simplify, is in line with Vite project structure
-- last-commit: a15028a (HEAD -> main) feat: hoist `process.env`
+### Bug Fixes
 
-## 2022-01-30
+* **haha:** 完成自动发布 ([1971805](https://github.com/like0413/electron-vite-vue/commit/19718052d4cf13f5dda8a3403b978134c3e08e09))
 
-[v1.0.0](https://github.com/electron-vite/electron-vite-vue/releases/tag/v1.0.0)
+### [0.0.10](https://github.com/like0413/electron-vite-vue/compare/v0.0.9...v0.0.10) (2024-03-05)
 
-- ⚡️ Main、Renderer、preload, all built with vite
 
-## 2022-01-27
-- Refactor the scripts part.
-- Remove `configs` directory.
+### Bug Fixes
 
-## 2021-11-11
-- Refactor the project. Use vite.config.ts build `Main-process`, `Preload-script` and `Renderer-process` alternative rollup.
-- Scenic `Vue>=3.2.13`, `@vue/compiler-sfc` is no longer necessary.
-- If you prefer Rollup, Use rollup branch.
+* **oop:** vvvv ([5bcf291](https://github.com/like0413/electron-vite-vue/commit/5bcf291cb55a4523d0089a27123793f9d21bf969))
+* **release:** 123 ([65a4b71](https://github.com/like0413/electron-vite-vue/commit/65a4b718dfb808b99d9684505254651511b301f6))
 
-```bash
-Error: @vitejs/plugin-vue requires vue (>=3.2.13) or @vue/compiler-sfc to be present in the dependency tree.
-```
+### [0.0.9](https://github.com/like0413/electron-vite-vue/compare/v0.0.8...v0.0.9) (2024-03-05)
+
+### [0.0.8](https://github.com/like0413/electron-vite-vue/compare/v0.0.7...v0.0.8) (2024-03-05)
