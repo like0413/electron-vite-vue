@@ -27,8 +27,10 @@ function loadEnv() {
 
 const { ENV } = loadEnv()
 
+const appId = ENV === 'prod' ? 'com.tingkelai.app' : 'com.beta.tingkelai.app'
+
 module.exports = {
-  appId: 'com.tingkelai.app',
+  appId,
   asar: true,
   productName: 'tingkelai',
   copyright: 'Copyright © 2024 ${author}',

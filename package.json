@@ -19,6 +19,8 @@
     "build:beta": "vue-tsc --noEmit && vite build --mode beta && electron-builder",
     "build:prod": "vue-tsc --noEmit && vite build --mode prod && electron-builder",
     "preview": "vite preview",
+    "release:alpha": "release-it --preRelease=alpha",
+    "release:beta": "release-it --preRelease=beta",
     "release": "release-it"
   },
   "devDependencies": {
