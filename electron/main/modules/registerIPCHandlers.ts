@@ -1,5 +1,5 @@
-import { app, ipcMain } from 'electron'
+import { app, ipcMain, BrowserWindow } from 'electron'
 
-function registerIPCHandlers() {}
+function registerIPCHandlers(win: BrowserWindow) {}
 
 export default registerIPCHandlers

@@ -9,6 +9,7 @@ import registerGlobalShortcut from './modules/registerGlobalShortcut'
 import setTasksList from './modules/setTasksList'
 import setApplicationMenu from './modules/setApplicationMenu'
 import registerIPCHandlers from './modules/registerIPCHandlers'
+import mainSendToRender from './modules/mainSendToRender'
 
 globalThis.__filename = fileURLToPath(import.meta.url)
 globalThis.__dirname = dirname(__filename)
@@ -68,6 +69,9 @@ async function createWindow() {
       win.hide()
     }
   })
+
+  // 向渲染进程发送消息
+  mainSendToRender(win)
 }
 
 app.whenReady().then(() => {
@@ -77,7 +81,7 @@ app.whenReady().then(() => {
   // 设置标题栏菜单
   setApplicationMenu()
   // 注册处理程序
-  registerIPCHandlers()
+  registerIPCHandlers(win)
   // 创建主窗口
   createWindow().then(() => {
     // 创建托盘

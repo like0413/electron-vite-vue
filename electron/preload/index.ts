@@ -1,26 +1,9 @@
 import { ipcRenderer, contextBridge } from 'electron'
 
-// --------- Expose some API to the Renderer process ---------
-contextBridge.exposeInMainWorld('ipcRenderer', withPrototype(ipcRenderer))
-
-// `exposeInMainWorld` can't detect attributes and methods of `prototype`, manually patching it.
-function withPrototype(obj: Record<string, any>) {
-  const protos = Object.getPrototypeOf(obj)
-
-  for (const [key, value] of Object.entries(protos)) {
-    if (Object.prototype.hasOwnProperty.call(obj, key)) continue
-
-    if (typeof value === 'function') {
-      // Some native APIs, like `NodeJS.EventEmitter['on']`, don't work in the Renderer process. Wrapping them into a function.
-      obj[key] = function (...args: any) {
-        return value.call(obj, ...args)
-      }
-    } else {
-      obj[key] = value
-    }
-  }
-  return obj
-}
+contextBridge.exposeInMainWorld('electronAPI', {
+  // mac 地址
+  onMacAddress: (callback: Function) => ipcRenderer.on('mac-address', (_event, value) => callback(value)),
+})
 
 // --------- Preload scripts loading ---------
 function domReady(condition: DocumentReadyState[] = ['complete', 'interactive']) {
@@ -39,23 +22,17 @@ function domReady(condition: DocumentReadyState[] = ['complete', 'interactive'])
 
 const safeDOM = {
   append(parent: HTMLElement, child: HTMLElement) {
-    if (!Array.from(parent.children).find(e => e === child)) {
+    if (!Array.from(parent.children).find((e) => e === child)) {
       return parent.appendChild(child)
     }
   },
   remove(parent: HTMLElement, child: HTMLElement) {
-    if (Array.from(parent.children).find(e => e === child)) {
+    if (Array.from(parent.children).find((e) => e === child)) {
       return parent.removeChild(child)
     }
   },
 }
 
-/**
- * https://tobiasahlin.com/spinkit
- * https://connoratherton.com/loaders
- * https://projects.lukehaas.me/css-loaders
- * https://matejkustec.github.io/SpinThatShit
- */
 function useLoading() {
   const className = `loaders-css__square-spin`
   const styleContent = `
@@ -105,8 +82,6 @@ function useLoading() {
   }
 }
 
-// ----------------------------------------------------------------------
-
 const { appendLoading, removeLoading } = useLoading()
 domReady().then(appendLoading)
 
@@ -115,3 +90,5 @@ window.onmessage = (ev) => {
 }
 
 setTimeout(removeLoading, 4999)
+
+// ----------------------------------------------------------------------
