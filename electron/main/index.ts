@@ -52,10 +52,6 @@ async function createWindow() {
 
   win.loadURL(APP_URL)
 
-  // win.webContents.on('did-finish-load', () => {
-  //   win?.webContents.send('main-process-message', new Date().toLocaleString())
-  // })
-
   // 在应用中点击 https:// 开头的链接时，用默认浏览器中打开
   win.webContents.setWindowOpenHandler(({ url }) => {
     if (url.startsWith('https:')) shell.openExternal(url)
@@ -71,7 +67,9 @@ async function createWindow() {
   })
 
   // 向渲染进程发送消息
-  mainSendToRender(win)
+  win.webContents.on('did-finish-load', () => {
+    mainSendToRender(win)
+  })
 }
 
 app.whenReady().then(() => {
