@@ -46,3 +46,7 @@ module.exports = {
     url: 'https://like-001.oss-cn-hangzhou.aliyuncs.com/tingkelai-client/' + ENV + '/latest',
   },
 }
+
+/**
+ * build 下的图标作用于桌面快捷方式、安装包、安装程序、开始菜单
+ */
