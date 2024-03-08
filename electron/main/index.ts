@@ -58,14 +58,6 @@ async function createWindow() {
     return { action: 'deny' }
   })
 
-  // 右上角关闭窗口时，不要退出应用
-  win.on('close', function (event) {
-    if (!global.isQuitting) {
-      event.preventDefault()
-      win.hide()
-    }
-  })
-
   // 主动向渲染进程发送消息
   win.webContents.on('did-finish-load', () => {
     mainSendToRender(win)
@@ -73,6 +65,14 @@ async function createWindow() {
     setTimeout(() => {
       enableUpdate()
     }, 8000)
+  })
+
+  // 右上角关闭窗口时，不要退出应用
+  win.on('close', function (event) {
+    if (!global.isQuitting) {
+      event.preventDefault()
+      win.hide()
+    }
   })
 }
 
