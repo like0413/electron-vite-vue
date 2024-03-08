@@ -3,6 +3,11 @@ import { ipcRenderer, contextBridge } from 'electron'
 contextBridge.exposeInMainWorld('electronAPI', {
   // 获取 mac 地址
   getMacAddress: () => ipcRenderer.invoke('get-mac-address'),
+  // 获取版本信息
+  getVersion: () => ipcRenderer.invoke('get-version'),
+  // 开机自启
+  isBootLaunch: () => ipcRenderer.invoke('is-boot-launch'),
+  setBootLaunch: (flag: boolean) => ipcRenderer.invoke('set-boot-launch', flag),
 })
 
 // --------- Preload scripts loading ---------
