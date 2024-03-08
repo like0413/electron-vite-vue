@@ -1,13 +1,9 @@
 import { ipcRenderer, contextBridge } from 'electron'
 
-ipcRenderer.on('mac-address', (_event, value) => {
-  console.log('mac-address:', value)
+contextBridge.exposeInMainWorld('electronAPI', {
+  // 获取 mac 地址
+  getMacAddress: () => ipcRenderer.invoke('get-mac-address'),
 })
-
-// contextBridge.exposeInMainWorld('electronAPI', {
-//   // mac 地址
-//   onMacAddress: (callback: Function) => ipcRenderer.on('mac-address', (_event, value) => callback(value)),
-// })
 
 // --------- Preload scripts loading ---------
 function domReady(condition: DocumentReadyState[] = ['complete', 'interactive']) {

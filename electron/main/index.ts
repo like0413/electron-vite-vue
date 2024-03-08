@@ -69,7 +69,7 @@ async function createWindow() {
 
   // 右上角关闭窗口时，不要退出应用
   win.on('close', function (event) {
-    if (!global.isQuitting) {
+    if (!global.allowQuit) {
       event.preventDefault()
       win.hide()
     }

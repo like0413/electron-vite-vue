@@ -23,7 +23,7 @@ function createTray(win: BrowserWindow, iconPath: string, extraOptions: extraOpt
     {
       label: '退出',
       click: function () {
-        global.isQuitting = true
+        global.allowQuit = true
         app.quit()
       },
     },

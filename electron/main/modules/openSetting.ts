@@ -23,6 +23,8 @@ function openSetting(preload: string, viteDevServerUrl: string, iconPath: string
     settingWindow.destroy()
     settingWindow = null
   })
+
+  settingWindow.webContents.openDevTools()
 }
 
 export default openSetting
