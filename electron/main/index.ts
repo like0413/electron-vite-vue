@@ -6,7 +6,7 @@ import getInnerAppUrl from './helpers/getInnerAppUrl'
 import enableUpdate from './modules/enableUpdate'
 import createTray from './modules/createTray'
 import registerGlobalShortcut from './modules/registerGlobalShortcut'
-import setUserTasks from './modules/setUserTasks'
+import setTasksList from './modules/setTasksList'
 import setApplicationMenu from './modules/setApplicationMenu'
 
 globalThis.__filename = fileURLToPath(import.meta.url)
@@ -71,8 +71,8 @@ async function createWindow() {
 
 app.whenReady().then(() => {
   nativeTheme.themeSource = 'light'
-  // 设置任务栏任务
-  setUserTasks()
+  // 设置任务栏列表
+  setTasksList()
   // 设置标题栏菜单
   setApplicationMenu()
   // 创建主窗口
