@@ -3,7 +3,12 @@ import openSetting from './openSetting'
 
 let tray: Tray | null = null
 
-function createTray(win: BrowserWindow, iconPath: string) {
+interface extraOptions {
+  preload: string
+  viteDevServerUrl: string
+}
+
+function createTray(win: BrowserWindow, iconPath: string, extraOptions: extraOptions) {
   const icon = nativeImage.createFromPath(iconPath)
   tray = new Tray(icon)
 
@@ -11,7 +16,7 @@ function createTray(win: BrowserWindow, iconPath: string) {
     {
       label: '设置',
       click: () => {
-        openSetting()
+        openSetting(extraOptions.preload, extraOptions.viteDevServerUrl)
       },
     },
     {

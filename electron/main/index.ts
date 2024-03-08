@@ -1,4 +1,4 @@
-import { app, BrowserWindow, shell, ipcMain } from 'electron'
+import { app, BrowserWindow, shell, ipcMain, nativeTheme } from 'electron'
 import { release } from 'node:os'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -6,6 +6,8 @@ import getInnerAppUrl from './helpers/getInnerAppUrl'
 import enableUpdate from './modules/enableUpdate'
 import createTray from './modules/createTray'
 import registerGlobalShortcut from './modules/registerGlobalShortcut'
+import setUserTasks from './modules/setUserTasks'
+import setApplicationMenu from './modules/setApplicationMenu'
 
 globalThis.__filename = fileURLToPath(import.meta.url)
 globalThis.__dirname = dirname(__filename)
@@ -68,10 +70,18 @@ async function createWindow() {
 }
 
 app.whenReady().then(() => {
+  nativeTheme.themeSource = 'light'
+  // 设置任务栏任务
+  setUserTasks()
+  // 设置标题栏菜单
+  setApplicationMenu()
   // 创建主窗口
   createWindow().then(() => {
     // 创建托盘
-    createTray(win, ICON_PATH)
+    createTray(win, ICON_PATH, {
+      preload,
+      viteDevServerUrl: process.env.VITE_DEV_SERVER_URL,
+    })
     // 注册全局快捷键
     registerGlobalShortcut(win)
     // 检查更新

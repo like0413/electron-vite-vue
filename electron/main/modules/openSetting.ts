@@ -1,19 +1,27 @@
-import { BrowserWindow } from 'electron'
+import { app, BrowserWindow } from 'electron'
 
-function openSetting() {
+function openSetting(preload: string, viteDevServerUrl: string) {
   let settingWindow = new BrowserWindow({
-    width: 400,
-    height: 300,
+    show: false,
     webPreferences: {
-      nodeIntegration: true,
+      preload,
     },
   })
-  settingWindow.loadURL(`file://${__dirname}/setting.html`)
+
+  if (viteDevServerUrl) {
+    settingWindow.loadURL(viteDevServerUrl + '#/setting')
+  } else {
+    settingWindow.loadURL(app.getAppPath() + '/dist/index.html#/setting')
+  }
+
+  settingWindow.once('ready-to-show', () => {
+    settingWindow.show()
+    settingWindow.focus()
+  })
   settingWindow.on('closed', () => {
-    settingWindow = null
     settingWindow.destroy()
+    settingWindow = null
   })
 }
-
 
 export default openSetting
