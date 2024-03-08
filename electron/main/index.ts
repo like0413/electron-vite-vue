@@ -43,8 +43,8 @@ const ICON_PATH = join(process.env.VITE_PUBLIC, 'favicon.ico')
 
 async function createWindow() {
   win = new BrowserWindow({
-    title: '听客来', // 窗口标题，可能会被网页标题覆盖
-    icon: ICON_PATH, // 窗口左上角（非网页图标，网页图标在index.html里设置）
+    title: '听客来', // 窗口左上角标题（可能会被网页标题覆盖）
+    icon: ICON_PATH, // 窗口左上角图标（非网页图标，网页图标在index.html里设置）
     webPreferences: {
       preload,
     },
@@ -66,9 +66,13 @@ async function createWindow() {
     }
   })
 
-  // 向渲染进程发送消息
+  // 主动向渲染进程发送消息
   win.webContents.on('did-finish-load', () => {
     mainSendToRender(win)
+    // 启用更新（8秒后检查更新）
+    setTimeout(() => {
+      enableUpdate()
+    }, 8000)
   })
 }
 
@@ -78,7 +82,7 @@ app.whenReady().then(() => {
   setTasksList()
   // 设置标题栏菜单
   setApplicationMenu()
-  // 注册处理程序
+  // 注册处理程序（接收渲染进程发来的消息）
   registerIPCHandlers(win)
   // 创建主窗口
   createWindow().then(() => {
@@ -90,8 +94,6 @@ app.whenReady().then(() => {
     })
     // 注册全局快捷键
     registerGlobalShortcut(win)
-    // 检查更新
-    enableUpdate()
   })
 })
 

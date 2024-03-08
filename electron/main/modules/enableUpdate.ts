@@ -2,15 +2,7 @@ import { dialog } from 'electron'
 import { autoUpdater } from 'electron-updater'
 import logger from 'electron-log'
 
-function sleep(ms: number) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms)
-  })
-}
-
 async function enableUpdate() {
-  // 等待 3 秒再检查更新，确保窗口准备完成，用户进入系统
-  await sleep(3000)
   autoUpdater.checkForUpdates()
   autoUpdater.logger = logger
   // autoUpdater.disableWebInstaller = false // 这个写成 false，写成 true 时，可能会报没权限更新
@@ -47,6 +39,5 @@ async function enableUpdate() {
       })
   })
 }
-
 
 export default enableUpdate
