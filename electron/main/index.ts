@@ -58,8 +58,8 @@ async function createWindow() {
     return { action: 'deny' }
   })
 
-  // 主动向渲染进程发送消息
   win.webContents.on('did-finish-load', () => {
+    // 主动向渲染进程发送消息
     mainSendToRender(win)
     // 启用更新（放在did-finish-load事件并在8秒后检查，用户友好）
     setTimeout(() => {
