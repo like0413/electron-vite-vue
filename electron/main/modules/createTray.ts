@@ -6,6 +6,7 @@ let tray: Tray | null = null
 interface extraOptions {
   preload: string
   viteDevServerUrl: string
+  iconPath: string
 }
 
 function createTray(win: BrowserWindow, iconPath: string, extraOptions: extraOptions) {
@@ -16,7 +17,7 @@ function createTray(win: BrowserWindow, iconPath: string, extraOptions: extraOpt
     {
       label: '设置',
       click: () => {
-        openSetting(extraOptions.preload, extraOptions.viteDevServerUrl)
+        openSetting(extraOptions.preload, extraOptions.viteDevServerUrl, extraOptions.iconPath)
       },
     },
     {

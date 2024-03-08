@@ -1,8 +1,9 @@
 import { app, BrowserWindow } from 'electron'
 
-function openSetting(preload: string, viteDevServerUrl: string) {
+function openSetting(preload: string, viteDevServerUrl: string, iconPath: string) {
   let settingWindow = new BrowserWindow({
     show: false,
+    icon: iconPath,
     webPreferences: {
       preload,
     },

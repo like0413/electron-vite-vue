@@ -8,6 +8,7 @@ import createTray from './modules/createTray'
 import registerGlobalShortcut from './modules/registerGlobalShortcut'
 import setTasksList from './modules/setTasksList'
 import setApplicationMenu from './modules/setApplicationMenu'
+import registerIPCHandlers from './modules/registerIPCHandlers'
 
 globalThis.__filename = fileURLToPath(import.meta.url)
 globalThis.__dirname = dirname(__filename)
@@ -75,12 +76,15 @@ app.whenReady().then(() => {
   setTasksList()
   // 设置标题栏菜单
   setApplicationMenu()
+  // 注册处理程序
+  registerIPCHandlers()
   // 创建主窗口
   createWindow().then(() => {
     // 创建托盘
     createTray(win, ICON_PATH, {
       preload,
       viteDevServerUrl: process.env.VITE_DEV_SERVER_URL,
+      iconPath: ICON_PATH,
     })
     // 注册全局快捷键
     registerGlobalShortcut(win)
@@ -113,20 +117,3 @@ app.on('window-all-closed', () => {
   win = null
   if (process.platform !== 'darwin') app.quit()
 })
-
-// New window example arg: new windows url
-// ipcMain.handle('open-win', (_, arg) => {
-//   const childWindow = new BrowserWindow({
-//     webPreferences: {
-//       preload,
-//       nodeIntegration: true,
-//       contextIsolation: false,
-//     },
-//   })
-
-//   if (process.env.VITE_DEV_SERVER_URL) {
-//     childWindow.loadURL(`${url}#${arg}`)
-//   } else {
-//     childWindow.loadFile(indexHtml, { hash: arg })
-//   }
-// })
