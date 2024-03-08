@@ -1,4 +1,4 @@
-function getAppUrl() {
+function getInnerAppUrl() {
   let url = ''
 
   switch (process.env.npm_lifecycle_event) {
@@ -17,4 +17,4 @@ function getAppUrl() {
   return url
 }
 
-export { getAppUrl }
+export default getInnerAppUrl

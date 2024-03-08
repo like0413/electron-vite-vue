@@ -8,7 +8,7 @@ function sleep(ms: number) {
   })
 }
 
-export async function autoUpdateApp() {
+async function enableUpdate() {
   // 等待 3 秒再检查更新，确保窗口准备完成，用户进入系统
   await sleep(3000)
   autoUpdater.checkForUpdates()
@@ -47,3 +47,6 @@ export async function autoUpdateApp() {
       })
   })
 }
+
+
+export default enableUpdate
