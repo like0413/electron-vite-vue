@@ -1,7 +1,16 @@
 import { app, BrowserWindow } from 'electron'
 
+let settingWindow: BrowserWindow | null = null
+
 function openSetting(preload: string, viteDevServerUrl: string, iconPath: string) {
-  let settingWindow = new BrowserWindow({
+  if (settingWindow) {
+    settingWindow.show()
+    settingWindow.focus()
+    return
+  }
+
+  settingWindow = new BrowserWindow({
+    title: '设置',
     show: false,
     icon: iconPath,
     webPreferences: {

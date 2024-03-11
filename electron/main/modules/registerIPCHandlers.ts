@@ -1,5 +1,6 @@
 import { app, ipcMain, BrowserWindow } from 'electron'
 import * as address from 'address'
+import { autoUpdater } from 'electron-updater'
 
 function registerIPCHandlers(win: BrowserWindow) {
   // 监听设置开机自启事件
@@ -15,6 +16,11 @@ function registerIPCHandlers(win: BrowserWindow) {
   ipcMain.handle('get-zoom-level', () => win.webContents.zoomFactor)
   ipcMain.handle('zoom', (event, factor) => {
     win!.webContents.zoomFactor = factor
+  })
+
+  // 检查更新
+  ipcMain.handle('check-update', async () => {
+    // autoUpdater.checkForUpdatesAndNotify()
   })
 
   // 监听获取 mac 地址事件

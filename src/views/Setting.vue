@@ -47,7 +47,7 @@
 
         <div v-show="selectedKeys.includes('update')" title="更新">
           <div style="margin-bottom: 12px">当前版本：{{ appInfo.appVersion }}</div>
-          <a-button @click="checkForUpdate">检查更新</a-button>
+          <a-button @click="checkUpdate">检查更新</a-button>
         </div>
 
         <div v-show="selectedKeys.includes('about')" title="关于">
@@ -110,20 +110,20 @@ watch(zoomLevel, (value) => {
 })
 
 // 检查更新
-function checkForUpdate() {
-  window.electronAPI.checkForUpdate().then((res: any) => {
-    if (res.hasNewVersion) {
-      Modal.info({
-        title: '发现新版本',
-        content: `当前版本：${appInfo.appVersion}，最新版本：${res.newVersion}`,
-        okText: '立即更新',
-        onOk() {
-          window.electronAPI.downloadUpdate()
-        },
-      })
-    } else {
-      message.success('当前已是最新版本')
-    }
+function checkUpdate() {
+  window.electronAPI.checkUpdate().then((res: any) => {
+    // if (res.hasNewVersion) {
+    //   Modal.info({
+    //     title: '发现新版本',
+    //     content: `当前版本：${appInfo.appVersion}，最新版本：${res.newVersion}`,
+    //     okText: '立即更新',
+    //     onOk() {
+    //       window.electronAPI.downloadUpdate()
+    //     },
+    //   })
+    // } else {
+    //   message.success('当前已是最新版本')
+    // }
   })
 }
 
