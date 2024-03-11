@@ -82,10 +82,10 @@ app.whenReady().then(() => {
   setTasksList()
   // 设置标题栏菜单
   setApplicationMenu()
-  // 注册处理程序（接收渲染进程发来的消息）
-  registerIPCHandlers(win)
   // 创建主窗口
   createWindow().then(() => {
+    // 注册处理程序（接收渲染进程发来的消息）
+    registerIPCHandlers(win)
     // 创建托盘
     createTray(win, ICON_PATH, {
       preload,
