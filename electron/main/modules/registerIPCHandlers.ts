@@ -31,20 +31,10 @@ function registerIPCHandlers(win: BrowserWindow) {
   // 监听获取系统信息事件
   ipcMain.handle('get-system-info', async () => {
     const platform = os.platform()
-    const release = os.release()
     const arch = os.arch()
-    const cpus = os.cpus()
-    const totalmem = os.totalmem()
-    const freemem = os.freemem()
-    const networkInterfaces = os.networkInterfaces()
     return {
       platform,
-      release,
       arch,
-      cpus,
-      totalmem,
-      freemem,
-      networkInterfaces,
     }
   })
 
