@@ -50,6 +50,8 @@ store.set('_server_url', process.env.VITE_DEV_SERVER_URL)
 
 async function createWindow() {
   win = new BrowserWindow({
+    width: 1280,
+    height: 720,
     title: '听客来', // 窗口左上角标题（会被网页标题覆盖）
     icon: ICON_PATH, // 窗口左上角图标（非网页图标，网页图标在index.html里设置）
     webPreferences: {

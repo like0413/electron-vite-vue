@@ -17,6 +17,9 @@ function openSetting() {
   }
 
   win = new BrowserWindow({
+    width: 700,
+    height: 500,
+    frame: false,
     show: false,
     icon: iconPath,
     webPreferences: {
@@ -38,8 +41,6 @@ function openSetting() {
     win.destroy()
     win = null
   })
-
-  win.webContents.openDevTools()
 }
 
 export default openSetting

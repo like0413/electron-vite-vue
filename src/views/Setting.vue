@@ -1,6 +1,9 @@
 <template>
   <div class="setting">
-    <div class="title">设置</div>
+    <div class="title">
+      <span>设置</span>
+      <a-button class="close-btn" size="small" :icon="h(CloseOutlined)" @click="closeWin"></a-button>
+    </div>
     <div class="body">
       <div class="sider">
         <a-menu v-model:selectedKeys="selectedKeys" mode="inline" class="menu">
@@ -100,6 +103,7 @@
 import { h, ref, reactive, onMounted, watch, toRaw } from 'vue'
 import { SettingOutlined, DeploymentUnitOutlined, UploadOutlined, InfoCircleOutlined } from '@ant-design/icons-vue'
 import { message, Modal } from 'ant-design-vue'
+import { CloseOutlined } from '@ant-design/icons-vue'
 
 onMounted(() => {
   document.title = '设置'
@@ -160,22 +164,36 @@ window.electronAPI.getVersion().then((info: any) => {
   appInfo.chromeVersion = info.chromeVersion
   appInfo.appPath = info.appPath
 })
+
+// 关闭
+function closeWin() {
+  window.close()
+}
 </script>
 
 <style scoped lang="scss">
 .setting {
   .title {
-    height: 45px;
+    height: 56px;
     width: 100%;
-    line-height: 45px;
-    padding-left: 18px;
+    line-height: 56px;
+    padding: 0 18px;
     font-size: 16px;
     background-color: #fff;
     box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* 可拖动 */
+    cursor: move;
+    -webkit-app-region: drag;
+    .close-btn {
+      -webkit-app-region: no-drag;
+    }
   }
   .body {
     display: flex;
-    height: calc(100vh - 45px);
+    height: calc(100vh - 56px);
     .sider {
       width: 200px;
       height: 100%;
