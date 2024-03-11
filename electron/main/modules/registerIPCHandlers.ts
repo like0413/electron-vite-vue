@@ -20,7 +20,7 @@ function registerIPCHandlers(win: BrowserWindow) {
 
   // 检查更新
   ipcMain.handle('check-update', async () => {
-    // autoUpdater.checkForUpdatesAndNotify()
+    autoUpdater.checkForUpdates()
   })
 
   // 监听获取 mac 地址事件

@@ -30,7 +30,6 @@
     "dotenv": "^16.4.5",
     "electron": "^28.1.0",
     "electron-builder": "^24.9.1",
-    "electron-log": "^5.1.1",
     "electron-updater": "^6.1.8",
     "release-it": "^17.1.1",
     "sass": "^1.71.1",
@@ -47,6 +46,7 @@
     "@ant-design/icons-vue": "^7.0.1",
     "address": "^2.0.2",
     "ant-design-vue": "4.x",
+    "electron-store": "^8.2.0",
     "vue-router": "^4.3.0"
   }
 }

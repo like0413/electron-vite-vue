@@ -87,6 +87,10 @@ import { h, ref, reactive, onMounted, watch, toRaw } from 'vue'
 import { SettingOutlined, DeploymentUnitOutlined, UploadOutlined, InfoCircleOutlined } from '@ant-design/icons-vue'
 import { message, Modal } from 'ant-design-vue'
 
+onMounted(() => {
+  document.title = '设置'
+})
+
 const selectedKeys = ref(['common'])
 
 // 开机自动启动
@@ -111,20 +115,7 @@ watch(zoomLevel, (value) => {
 
 // 检查更新
 function checkUpdate() {
-  window.electronAPI.checkUpdate().then((res: any) => {
-    // if (res.hasNewVersion) {
-    //   Modal.info({
-    //     title: '发现新版本',
-    //     content: `当前版本：${appInfo.appVersion}，最新版本：${res.newVersion}`,
-    //     okText: '立即更新',
-    //     onOk() {
-    //       window.electronAPI.downloadUpdate()
-    //     },
-    //   })
-    // } else {
-    //   message.success('当前已是最新版本')
-    // }
-  })
+  window.electronAPI.checkUpdate()
 }
 
 // 获取mac地址

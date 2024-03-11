@@ -1,5 +1,5 @@
 import { app, Tray, Menu, BrowserWindow, nativeImage } from 'electron'
-import openSetting from './openSetting'
+import openSetting from '../modals/openSetting'
 
 let tray: Tray | null = null
 
@@ -17,13 +17,15 @@ function createTray(win: BrowserWindow, iconPath: string, extraOptions: extraOpt
     {
       label: '设置',
       click: () => {
-        openSetting(extraOptions.preload, extraOptions.viteDevServerUrl, extraOptions.iconPath)
+        openSetting()
       },
     },
     {
       label: '退出',
       click: function () {
         global.allowQuit = true
+        win.destroy()
+        win = null
         app.quit()
       },
     },

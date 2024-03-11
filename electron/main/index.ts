@@ -2,6 +2,7 @@ import { app, BrowserWindow, shell, ipcMain, nativeTheme } from 'electron'
 import { release } from 'node:os'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import Store from 'electron-store'
 import getInnerAppUrl from './helpers/getInnerAppUrl'
 import enableUpdate from './modules/enableUpdate'
 import createTray from './modules/createTray'
@@ -10,6 +11,8 @@ import setTasksList from './modules/setTasksList'
 import setApplicationMenu from './modules/setApplicationMenu'
 import registerIPCHandlers from './modules/registerIPCHandlers'
 import mainSendToRender from './modules/mainSendToRender'
+
+const store = new Store()
 
 globalThis.__filename = fileURLToPath(import.meta.url)
 globalThis.__dirname = dirname(__filename)
@@ -41,9 +44,13 @@ const APP_URL = getInnerAppUrl()
 const preload = join(__dirname, '../preload/index.mjs') //! 注意：这里是mjs，是在 dist-electron目录里查找
 const ICON_PATH = join(process.env.VITE_PUBLIC, 'favicon.ico')
 
+store.set('_preload_path', preload)
+store.set('_icon_path', ICON_PATH)
+store.set('_server_url', process.env.VITE_DEV_SERVER_URL)
+
 async function createWindow() {
   win = new BrowserWindow({
-    title: '听客来', // 窗口左上角标题（可能会被网页标题覆盖）
+    title: '听客来', // 窗口左上角标题（会被网页标题覆盖）
     icon: ICON_PATH, // 窗口左上角图标（非网页图标，网页图标在index.html里设置）
     webPreferences: {
       preload,
@@ -63,7 +70,7 @@ async function createWindow() {
     mainSendToRender(win)
     // 启用更新（放在did-finish-load事件并在8秒后检查，用户友好）
     setTimeout(() => {
-      enableUpdate()
+      enableUpdate(win)
     }, 8000)
   })
 
