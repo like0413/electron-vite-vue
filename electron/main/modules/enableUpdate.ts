@@ -1,28 +1,29 @@
 import { BrowserWindow, dialog, app, ipcMain } from 'electron'
 import { autoUpdater } from 'electron-updater'
-import openUpdatePrompt from '../modals/openUpdatePrompt'
-import openDownloadProgress from '../modals/openDownloadProgress'
 
 async function enableUpdate(win: BrowserWindow) {
-  autoUpdater.autoDownload = false
+  autoUpdater.autoDownload = true // 自动下载更新（默认）
+  autoUpdater.autoInstallOnAppQuit = true // 在退出时自动安装（默认）
 
   autoUpdater.checkForUpdates()
   setTimeout(() => {
     autoUpdater.checkForUpdates()
   }, 10 * 1000 * 60)
 
-  // 有可用更新
-  autoUpdater.on('update-available', (info) => {})
-
-  // 下载进度
-  autoUpdater.on('download-progress', async (progress) => {
-    const downloadPercent = Math.round(progress.percent * 100) / 100
-    win.webContents.send('download-progress', downloadPercent)
-  })
-
   // 下载完成
   autoUpdater.on('update-downloaded', (res) => {
-    autoUpdater.quitAndInstall()
+    dialog
+      .showMessageBox({
+        type: 'info',
+        title: '发现新版本',
+        message: '是否立即更新？',
+        buttons: ['是', '否'],
+      })
+      .then((res) => {
+        if (res.response === 0) {
+          autoUpdater.quitAndInstall()
+        }
+      })
   })
 }
 

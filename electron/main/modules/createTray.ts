@@ -1,5 +1,5 @@
 import { app, Tray, Menu, BrowserWindow, nativeImage } from 'electron'
-import openSetting from '../modals/openSetting'
+import openSetting from './openSetting'
 
 let tray: Tray | null = null
 

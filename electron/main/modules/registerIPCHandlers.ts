@@ -1,6 +1,6 @@
 import { app, ipcMain, BrowserWindow } from 'electron'
 import * as address from 'address'
-import { autoUpdater } from 'electron-updater'
+import os from 'os'
 
 function registerIPCHandlers(win: BrowserWindow) {
   // 监听设置开机自启事件
@@ -18,11 +18,6 @@ function registerIPCHandlers(win: BrowserWindow) {
     win!.webContents.zoomFactor = factor
   })
 
-  // 检查更新
-  ipcMain.handle('check-update', async () => {
-    autoUpdater.checkForUpdates()
-  })
-
   // 监听获取 mac 地址事件
   ipcMain.handle('get-mac-address', async () => {
     return await new Promise((resolve, reject) => {
@@ -31,6 +26,26 @@ function registerIPCHandlers(win: BrowserWindow) {
         resolve(addr.replace(/:/g, '-'))
       })
     })
+  })
+
+  // 监听获取系统信息事件
+  ipcMain.handle('get-system-info', async () => {
+    const platform = os.platform()
+    const release = os.release()
+    const arch = os.arch()
+    const cpus = os.cpus()
+    const totalmem = os.totalmem()
+    const freemem = os.freemem()
+    const networkInterfaces = os.networkInterfaces()
+    return {
+      platform,
+      release,
+      arch,
+      cpus,
+      totalmem,
+      freemem,
+      networkInterfaces,
+    }
   })
 
   // 监听获取版本信息事件

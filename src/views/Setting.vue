@@ -12,10 +12,10 @@
             <DeploymentUnitOutlined />
             <span class="nav-text">快捷键</span>
           </a-menu-item>
-          <a-menu-item key="update">
+          <!-- <a-menu-item key="update">
             <upload-outlined />
             <span class="nav-text">更新</span>
-          </a-menu-item>
+          </a-menu-item> -->
           <a-menu-item key="about">
             <InfoCircleOutlined />
             <span class="nav-text">关于</span>
@@ -43,14 +43,28 @@
           </div>
         </div>
 
-        <div v-show="selectedKeys.includes('shortCut')" title="快捷键">快捷键</div>
-
-        <div v-show="selectedKeys.includes('update')" title="更新">
-          <div style="margin-bottom: 12px">当前版本：{{ appInfo.appVersion }}</div>
-          <a-button @click="checkUpdate">检查更新</a-button>
+        <div v-show="selectedKeys.includes('shortCut')" title="快捷键">
+          <div class="item">
+            <div class="sub-title">打开控制台：</div>
+            <div class="mac sub-text">
+              {{ isMac ? 'Shift+Cmd+I' : 'Shift+Ctrl+I' }}
+            </div>
+          </div>
+          <div class="item">
+            <div class="sub-title">刷新页面：</div>
+            <div class="mac sub-text">
+              {{ isMac ? 'Shift+Cmd+R' : 'Shift+Ctrl+R' }}
+            </div>
+          </div>
         </div>
 
         <div v-show="selectedKeys.includes('about')" title="关于">
+          <div class="item">
+            <div class="sub-title">当前版本：</div>
+            <div class="mac sub-text">
+              {{ appInfo.appVersion }}
+            </div>
+          </div>
           <div class="item">
             <div class="sub-title">mac码：</div>
             <div class="mac sub-text">
@@ -113,10 +127,14 @@ watch(zoomLevel, (value) => {
   window.electronAPI.setZoom(Number(value))
 })
 
-// 检查更新
-function checkUpdate() {
-  window.electronAPI.checkUpdate()
-}
+// 快捷键
+// 判断当前应用是在windows还是mac
+const isMac = ref(false)
+onMounted(() => {
+  window.electronAPI.getSystemInfo().then((info: any) => {
+    isMac.value = info.platform === 'darwin'
+  })
+})
 
 // 获取mac地址
 const macCode = ref('')
@@ -172,7 +190,7 @@ window.electronAPI.getVersion().then((info: any) => {
       flex: 1;
       padding: 10px;
       .item {
-        margin-top: 24px;
+        margin-bottom: 24px;
         .sub-title {
           margin-bottom: 8px;
         }
@@ -180,9 +198,6 @@ window.electronAPI.getVersion().then((info: any) => {
           color: #999;
           font-size: 14px;
         }
-      }
-      .item:first-child {
-        margin-top: 12px;
       }
     }
   }

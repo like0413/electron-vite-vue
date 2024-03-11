@@ -7,8 +7,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // 页面缩放
   getZoomLevel: () => ipcRenderer.invoke('get-zoom-level'),
   setZoom: (factor: number) => ipcRenderer.invoke('zoom', factor),
-  // 检查更新
-  checkUpdate: () => ipcRenderer.invoke('check-update'),
+  // 获取系统信息
+  getSystemInfo: () => ipcRenderer.invoke('get-system-info'),
   // 获取 mac 地址
   getMacAddress: () => ipcRenderer.invoke('get-mac-address'),
   // 获取版本信息
