@@ -8,7 +8,7 @@ function sleep(ms: number) {
 }
 
 async function enableUpdate(win: BrowserWindow) {
-  await sleep(1000 * 8) // 等待8s再检查更新
+  await sleep(1000 * 10) // 等待再检查更新
 
   autoUpdater.autoDownload = true // 自动下载更新（默认）
   autoUpdater.autoInstallOnAppQuit = true // 在退出时自动安装（默认）

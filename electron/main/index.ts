@@ -39,6 +39,7 @@ process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 let win: BrowserWindow | null = null
 
 const APP_URL = process.env.APP_URL || ''
+console.log('APP_URL: ', APP_URL)
 const preload = join(__dirname, '../preload/index.mjs') //! 注意：这里是mjs，是在 dist-electron目录里查找
 const ICON_PATH = join(process.env.VITE_PUBLIC, 'favicon.ico')
 
