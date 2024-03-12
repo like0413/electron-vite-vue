@@ -29,8 +29,6 @@
     "@vitejs/plugin-vue": "^5.0.1",
     "address": "^2.0.2",
     "ant-design-vue": "4.x",
-    "cross-env": "^7.0.3",
-    "dotenv": "^16.4.5",
     "electron": "^28.1.0",
     "electron-builder": "^24.9.1",
     "electron-store": "^8.2.0",
