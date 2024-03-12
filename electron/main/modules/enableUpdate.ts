@@ -29,12 +29,9 @@ async function enableUpdate() {
         type: 'info',
         title: '发现新版本',
         message: '是否立即更新？',
-        buttons: ['是', '否'],
       })
       .then((res) => {
-        if (res.response === 0) {
-          autoUpdater.quitAndInstall()
-        }
+        autoUpdater.quitAndInstall()
       })
   })
 }
