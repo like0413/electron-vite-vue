@@ -3,6 +3,24 @@ const appId = 'com.' + ENV + '.tingkelai.app'
 const productName = ENV === 'prod' ? 'tingkelai' : 'tingkelai-' + ENV
 const shortcutName = ENV === 'prod' ? '听客来' : '听客来 ' + ENV.charAt(0).toUpperCase() + ENV.slice(1)
 
+function getAppUrl(env) {
+  let appUrl = ''
+  switch (env) {
+    case 'prod':
+      appUrl = 'https://www.tingkelai.com/tingkelai'
+      break
+    case 'beta':
+      appUrl = 'https://beta.tingkelai.com/tingkelai'
+      break
+    case 'alpha':
+      appUrl = 'https://alpha.tingkelai.com/tingkelai'
+      break
+  }
+  return appUrl
+}
+
+const appUrl = getAppUrl(ENV)
+
 module.exports = {
   appId,
   asar: true,
@@ -10,6 +28,9 @@ module.exports = {
   copyright: 'Copyright © 2024 ${author}',
   directories: {
     output: 'release/${version}',
+  },
+  extraMetadata: {
+    appUrl,
   },
   files: ['dist', 'dist-electron'],
   mac: {

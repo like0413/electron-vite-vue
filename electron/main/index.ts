@@ -1,6 +1,6 @@
 import { app, BrowserWindow, shell, ipcMain, nativeTheme } from 'electron'
 import { release } from 'node:os'
-import { join, dirname } from 'node:path'
+import { join, dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import Store from 'electron-store'
 import enableUpdate from './modules/enableUpdate'
@@ -9,6 +9,11 @@ import registerGlobalShortcut from './modules/registerGlobalShortcut'
 import setTasksList from './modules/setTasksList'
 import setApplicationMenu from './modules/setApplicationMenu'
 import registerIPCHandlers from './modules/registerIPCHandlers'
+import fs from 'fs'
+
+const appPath = app.getAppPath()
+const pkgPath = resolve(appPath, './package.json')
+const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'))
 
 const store = new Store()
 
@@ -38,7 +43,7 @@ process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 
 let win: BrowserWindow | null = null
 
-const APP_URL = process.env.APP_URL || ''
+const APP_URL = process.env.VITE_DEV_SERVER_URL ? 'https://alpha.tingkelai.com/tingkelai' : pkg.appUrl
 const preload = join(__dirname, '../preload/index.mjs') //! 注意：这里是mjs，是在 dist-electron目录里查找
 const ICON_PATH = join(process.env.VITE_PUBLIC, 'favicon.ico')
 

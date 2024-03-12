@@ -14,11 +14,11 @@
   },
   "type": "module",
   "scripts": {
-    "dev": "cross-env APP_URL='https://alpha.tingkelai.com/tingkelai' vite",
+    "dev": "vite",
     "preview": "vite preview",
-    "build:alpha": "vue-tsc --noEmit && vite build && cross-env APP_URL='https://alpha.tingkelai.com/tingkelai' electron-builder",
-    "build:beta": "vue-tsc --noEmit && vite build && cross-env APP_URL='https://beta.tingkelai.com/tingkelai' electron-builder",
-    "build:prod": "vue-tsc --noEmit && vite build && cross-env APP_URL='https://www.tingkelai.com/tingkelai' electron-builder",
+    "build:alpha": "vue-tsc --noEmit && vite build && electron-builder",
+    "build:beta": "vue-tsc --noEmit && vite build && electron-builder",
+    "build:prod": "vue-tsc --noEmit && vite build && electron-builder",
     "release:alpha": "release-it --preRelease=alpha",
     "release:beta": "release-it --preRelease=beta",
     "release:prod": "release-it"
