@@ -17,4 +17,17 @@ function getInnerAppUrl() {
   return url
 }
 
-export default getInnerAppUrl
+function getEnv() {
+  switch (process.env.npm_lifecycle_event) {
+    case 'dev':
+      return 'dev'
+    case 'build:alpha':
+      return 'alpha'
+    case 'build:beta':
+      return 'beta'
+    case 'build:prod':
+      return 'prod'
+  }
+}
+
+export { getInnerAppUrl, getEnv }

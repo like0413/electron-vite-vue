@@ -3,14 +3,13 @@ import { release } from 'node:os'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import Store from 'electron-store'
-import getInnerAppUrl from './helpers/getInnerAppUrl'
+import { getInnerAppUrl } from './helpers'
 import enableUpdate from './modules/enableUpdate'
 import createTray from './modules/createTray'
 import registerGlobalShortcut from './modules/registerGlobalShortcut'
 import setTasksList from './modules/setTasksList'
 import setApplicationMenu from './modules/setApplicationMenu'
 import registerIPCHandlers from './modules/registerIPCHandlers'
-import mainSendToRender from './modules/mainSendToRender'
 
 const store = new Store()
 
@@ -44,9 +43,10 @@ const APP_URL = getInnerAppUrl()
 const preload = join(__dirname, '../preload/index.mjs') //! 注意：这里是mjs，是在 dist-electron目录里查找
 const ICON_PATH = join(process.env.VITE_PUBLIC, 'favicon.ico')
 
+store.clear()
 store.set('_preload_path', preload)
 store.set('_icon_path', ICON_PATH)
-store.set('_server_url', process.env.VITE_DEV_SERVER_URL)
+store.set('_server_url', process.env.VITE_DEV_SERVER_URL ?? '')
 
 async function createWindow() {
   win = new BrowserWindow({
@@ -61,19 +61,14 @@ async function createWindow() {
 
   win.loadURL(APP_URL)
 
+  win.webContents.on('did-finish-load', () => {
+    enableUpdate(win)
+  })
+
   // 在应用中点击 https:// 开头的链接时，用默认浏览器中打开
   win.webContents.setWindowOpenHandler(({ url }) => {
     if (url.startsWith('https:')) shell.openExternal(url)
     return { action: 'deny' }
-  })
-
-  win.webContents.on('did-finish-load', () => {
-    // 主动向渲染进程发送消息
-    mainSendToRender(win)
-    // 启用更新（放在did-finish-load事件并在8秒后检查，用户友好）
-    setTimeout(() => {
-      enableUpdate(win)
-    }, 8000)
   })
 
   // 右上角关闭窗口时，不要退出应用
@@ -96,11 +91,7 @@ app.whenReady().then(() => {
     // 注册处理程序（接收渲染进程发来的消息）
     registerIPCHandlers(win)
     // 创建托盘
-    createTray(win, ICON_PATH, {
-      preload,
-      viteDevServerUrl: process.env.VITE_DEV_SERVER_URL,
-      iconPath: ICON_PATH,
-    })
+    createTray(win, ICON_PATH)
     // 注册全局快捷键
     registerGlobalShortcut(win)
   })

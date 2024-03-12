@@ -3,13 +3,7 @@ import openSetting from './openSetting'
 
 let tray: Tray | null = null
 
-interface extraOptions {
-  preload: string
-  viteDevServerUrl: string
-  iconPath: string
-}
-
-function createTray(win: BrowserWindow, iconPath: string, extraOptions: extraOptions) {
+function createTray(win: BrowserWindow, iconPath: string) {
   const icon = nativeImage.createFromPath(iconPath)
   tray = new Tray(icon)
 
