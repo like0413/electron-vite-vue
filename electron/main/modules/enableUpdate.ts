@@ -1,34 +1,18 @@
-import { BrowserWindow, dialog, app, ipcMain } from 'electron'
+import { dialog, app, ipcMain } from 'electron'
 import { autoUpdater } from 'electron-updater'
 import log from 'electron-log/main'
 
-function sleep(ms: number) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms)
-  })
-}
-
-async function enableUpdate(win: BrowserWindow) {
-  await sleep(1000 * 10) // 等待再检查更新
-
-  autoUpdater.autoDownload = true // 自动下载更新（默认）
-  autoUpdater.autoInstallOnAppQuit = true // 在退出时自动安装（默认）
+async function enableUpdate() {
+  autoUpdater.autoDownload = false
+  // autoUpdater.autoInstallOnAppQuit = true // 在退出时自动安装（默认）
 
   autoUpdater.checkForUpdates()
   setInterval(() => {
     autoUpdater.checkForUpdates()
-  }, 10 * 1000 * 60)
+  }, 10 * 60 * 1000)
 
   autoUpdater.on('error', (err) => {
     log.error('更新出错', err)
-  })
-
-  autoUpdater.on('checking-for-update', () => {
-    log.info('正在检查更新')
-  })
-
-  autoUpdater.on('update-not-available', (res) => {
-    log.info('没有新版本', res)
   })
 
   //  有新版本

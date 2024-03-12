@@ -66,7 +66,9 @@ async function createWindow() {
   win.loadURL(APP_URL)
 
   win.webContents.on('did-finish-load', () => {
-    enableUpdate(win)
+    setTimeout(() => {
+      enableUpdate()
+    }, 10 * 1000)
   })
 
   // 在应用中点击 https:// 开头的链接时，用默认浏览器中打开
