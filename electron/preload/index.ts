@@ -1,4 +1,4 @@
-import { ipcRenderer, contextBridge } from 'electron'
+import { ipcRenderer, contextBridge, shell } from 'electron'
 
 contextBridge.exposeInMainWorld('electronAPI', {
   // 开机自启
@@ -13,6 +13,16 @@ contextBridge.exposeInMainWorld('electronAPI', {
   getMacAddress: () => ipcRenderer.invoke('get-mac-address'),
   // 获取版本信息
   getVersion: () => ipcRenderer.invoke('get-version'),
+})
+
+// 注入 isElectron 和 mac
+contextBridge.exposeInMainWorld('isElectron', true)
+ipcRenderer.on('get-mac-address', (_event, value) => {
+  contextBridge.exposeInMainWorld('mac', value)
+})
+// 支持打开外部链接（事件方式）
+window.addEventListener('externalLink', function (e: any) {
+  shell.openExternal(e.detail.href)
 })
 
 // --------- Preload scripts loading ---------

@@ -9,6 +9,8 @@ import registerGlobalShortcut from './modules/registerGlobalShortcut'
 import setTasksList from './modules/setTasksList'
 import setApplicationMenu from './modules/setApplicationMenu'
 import registerIPCHandlers from './modules/registerIPCHandlers'
+import setContextmenu from './modules/setContextmenu'
+import mainToRender from './modules/mainToRender'
 import fs from 'fs'
 
 const appPath = app.getAppPath()
@@ -66,6 +68,9 @@ async function createWindow() {
   win.loadURL(APP_URL)
 
   win.webContents.on('did-finish-load', () => {
+    // 主进程向渲染进程发送消息
+    mainToRender(win)
+    // 启用更新
     setTimeout(() => {
       enableUpdate()
     }, 10 * 1000)
@@ -100,6 +105,8 @@ app.whenReady().then(async () => {
   createTray(win, ICON_PATH)
   // 注册全局快捷键
   registerGlobalShortcut(win)
+  // 设置 context menu
+  setContextmenu(win)
 })
 
 // 如果试图打开另一个主窗口，则focus在主窗口上，而不是打开另一个窗口

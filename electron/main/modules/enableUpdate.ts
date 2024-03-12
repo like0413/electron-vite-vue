@@ -4,7 +4,7 @@ import log from 'electron-log/main'
 
 async function enableUpdate() {
   autoUpdater.autoDownload = false
-  // autoUpdater.autoInstallOnAppQuit = true // 在退出时自动安装（默认）
+  autoUpdater.autoInstallOnAppQuit = true // 在退出时自动安装（默认）
 
   autoUpdater.checkForUpdates()
   setInterval(() => {
