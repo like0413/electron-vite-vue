@@ -15,7 +15,7 @@ async function enableUpdate(win: BrowserWindow) {
   autoUpdater.autoInstallOnAppQuit = true // 在退出时自动安装（默认）
 
   autoUpdater.checkForUpdates()
-  setTimeout(() => {
+  setInterval(() => {
     autoUpdater.checkForUpdates()
   }, 10 * 1000 * 60)
 
