@@ -12,7 +12,7 @@ async function enableUpdate() {
   }, 10 * 60 * 1000)
 
   autoUpdater.on('error', (err) => {
-    log.error('更新出错', err)
+    log.error('更新出错了', err)
   })
 
   //  有新版本
