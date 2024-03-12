@@ -9,7 +9,7 @@ async function enableUpdate() {
   autoUpdater.checkForUpdates()
   setInterval(() => {
     autoUpdater.checkForUpdates()
-  }, 10 * 60 * 1000)
+  }, 60 * 60 * 1000)
 
   autoUpdater.on('error', (err) => {
     log.error('更新出错了', err)
@@ -29,7 +29,7 @@ async function enableUpdate() {
         type: 'info',
         title: '发现新版本',
         message: '是否立即更新？',
-        buttons: ['立即更新', '下次启动时更新'],
+        buttons: ['是', '否'],
       })
       .then((res) => {
         if (res.response === 0) {
