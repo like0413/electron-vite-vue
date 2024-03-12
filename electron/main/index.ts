@@ -3,7 +3,6 @@ import { release } from 'node:os'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import Store from 'electron-store'
-import { getInnerAppUrl } from './helpers'
 import enableUpdate from './modules/enableUpdate'
 import createTray from './modules/createTray'
 import registerGlobalShortcut from './modules/registerGlobalShortcut'
@@ -39,7 +38,7 @@ process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 
 let win: BrowserWindow | null = null
 
-const APP_URL = getInnerAppUrl()
+const APP_URL = process.env.APP_URL || ''
 const preload = join(__dirname, '../preload/index.mjs') //! 注意：这里是mjs，是在 dist-electron目录里查找
 const ICON_PATH = join(process.env.VITE_PUBLIC, 'favicon.ico')
 
