@@ -84,21 +84,20 @@ async function createWindow() {
   })
 }
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   nativeTheme.themeSource = 'light'
   // 设置任务栏列表
   setTasksList()
   // 设置标题栏菜单
   setApplicationMenu()
   // 创建主窗口
-  createWindow().then(() => {
-    // 注册处理程序（接收渲染进程发来的消息）
-    registerIPCHandlers(win)
-    // 创建托盘
-    createTray(win, ICON_PATH)
-    // 注册全局快捷键
-    registerGlobalShortcut(win)
-  })
+  await createWindow()
+  // 注册处理程序（接收渲染进程发来的消息）
+  registerIPCHandlers(win)
+  // 创建托盘
+  createTray(win, ICON_PATH)
+  // 注册全局快捷键
+  registerGlobalShortcut(win)
 })
 
 // 如果试图打开另一个主窗口，则focus在主窗口上，而不是打开另一个窗口

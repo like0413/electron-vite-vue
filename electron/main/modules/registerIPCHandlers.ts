@@ -23,7 +23,7 @@ function registerIPCHandlers(win: BrowserWindow) {
     return await new Promise((resolve, reject) => {
       address.mac(function (err: any, addr: string) {
         if (err) reject(err)
-        resolve(addr.replace(/:/g, '-'))
+        resolve(addr.replace(/:/g, '-').toUpperCase())
       })
     })
   })
