@@ -19,6 +19,18 @@ async function enableUpdate(win: BrowserWindow) {
     autoUpdater.checkForUpdates()
   }, 10 * 1000 * 60)
 
+  autoUpdater.on('error', (err) => {
+    log.error('更新出错', err)
+  })
+
+  autoUpdater.on('checking-for-update', () => {
+    log.info('正在检查更新')
+  })
+
+  autoUpdater.on('update-not-available', (res) => {
+    log.info('没有新版本', res)
+  })
+
   //  有新版本
   autoUpdater.on('update-available', (res) => {
     log.info('发现新版本', res)
