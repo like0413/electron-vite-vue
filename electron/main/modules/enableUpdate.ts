@@ -28,7 +28,7 @@ async function enableUpdate() {
       .showMessageBox({
         type: 'info',
         title: '发现新版本',
-        message: '是否立即更新？',
+        message: '请立即更新版本，防止使用过程中出现问题',
       })
       .then((res) => {
         autoUpdater.quitAndInstall()
