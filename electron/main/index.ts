@@ -11,7 +11,6 @@ import setApplicationMenu from './modules/setApplicationMenu'
 import registerIPCHandlers from './modules/registerIPCHandlers'
 import setContextmenu from './modules/setContextmenu'
 import mainToRender from './modules/mainToRender'
-import setDockMenu from './modules/setDockMenu'
 import fs from 'fs'
 
 const appPath = app.getAppPath()
