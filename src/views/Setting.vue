@@ -50,7 +50,7 @@
           <div class="item">
             <div class="sub-title">打开控制台：</div>
             <div class="mac sub-text">
-              {{ isMac ? 'Shift+Cmd+I' : 'Shift+Ctrl+I' }}
+              {{ isMac ? 'Shift+Cmd+P' : 'Shift+Ctrl+P' }}
             </div>
           </div>
           <div class="item">

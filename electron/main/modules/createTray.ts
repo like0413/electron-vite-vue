@@ -7,9 +7,10 @@ const store = new Store()
 let tray: Tray | null = null
 
 function createTray(win: BrowserWindow) {
-  const iconPath = store.get('_icon_path') as string
+  const iconPath = store.get('_icon_path_png') as string
+  const iconPathIco = store.get('_icon_path_ico') as string
 
-  const icon = nativeImage.createFromPath(iconPath)
+  const icon = nativeImage.createFromPath(process.platform === 'darwin' ? iconPath : iconPathIco)
   tray = new Tray(icon)
 
   const contextMenu = Menu.buildFromTemplate([

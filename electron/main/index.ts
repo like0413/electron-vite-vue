@@ -50,20 +50,25 @@ let quit = false
 
 const APP_URL = process.env.VITE_DEV_SERVER_URL ? 'https://alpha.tingkelai.com/tingkelai' : pkg.appUrl
 const preload = join(__dirname, '../preload/index.mjs') //! 注意：这里是mjs，是在 dist-electron目录里查找
-const ICON_PATH = join(__dirname, '../../build/icon.png')
+const ICON_PATH_PNG = join(__dirname, '../../build/icon.png')
+const ICON_PATH_ICO = join(__dirname, '../../build/icon.ico')
 
 store.clear()
 store.set('_preload_path', preload)
-store.set('_icon_path', ICON_PATH)
+store.set('_icon_path_png', ICON_PATH_PNG)
+store.set('_icon_path_ico', ICON_PATH_ICO)
 store.set('_server_url', process.env.VITE_DEV_SERVER_URL ?? '')
 
 async function createWindow() {
   win = new BrowserWindow({
     show: false, // 先隐藏窗口，等待渲染进程准备好后再显示
     width: 1280,
-    height: 720,
+    height: 800,
+    minWidth: 800,
+    minHeight: 600,
+    center: true,
     title: '听客来', // 窗口左上角标题（会被网页标题覆盖）
-    icon: ICON_PATH, // 窗口左上角图标（非网页图标，网页图标在index.html里设置）
+    icon: ICON_PATH_PNG, // 窗口左上角图标（非网页图标，网页图标在index.html里设置）
     webPreferences: {
       preload,
     },
@@ -106,7 +111,7 @@ app.whenReady().then(async () => {
   // 设置标题栏菜单
   setApplicationMenu()
   // 设置 dock menu(macos)
-  setDockMenu()
+  // setDockMenu()
   // 创建主窗口
   await createWindow()
   // 注册处理程序（接收渲染进程发来的消息）
