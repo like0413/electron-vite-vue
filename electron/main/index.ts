@@ -46,6 +46,8 @@ process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 
 let win: BrowserWindow | null = null
 
+let quit = false
+
 const APP_URL = process.env.VITE_DEV_SERVER_URL ? 'https://alpha.tingkelai.com/tingkelai' : pkg.appUrl
 const preload = join(__dirname, '../preload/index.mjs') //! 注意：这里是mjs，是在 dist-electron目录里查找
 const ICON_PATH = join(__dirname, '../../build/icon.png')
@@ -90,8 +92,10 @@ async function createWindow() {
 
   // 右上角关闭窗口时，不要退出应用
   win.on('close', function (event) {
-    event.preventDefault()
-    win.hide()
+    if (!quit) {
+      event.preventDefault()
+      win.hide()
+    }
   })
 }
 
@@ -101,6 +105,8 @@ app.whenReady().then(async () => {
   setTasksList()
   // 设置标题栏菜单
   setApplicationMenu()
+  // 设置 dock menu(macos)
+  setDockMenu()
   // 创建主窗口
   await createWindow()
   // 注册处理程序（接收渲染进程发来的消息）
@@ -111,8 +117,6 @@ app.whenReady().then(async () => {
   registerGlobalShortcut(win)
   // 设置 context menu
   setContextmenu(win)
-  // 设置 dock menu(macos)
-  setDockMenu()
 })
 
 // 如果试图打开另一个主窗口，则focus在主窗口上，而不是打开另一个窗口
@@ -140,4 +144,6 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
 })
 
-app.on('before-quit', (event) => {})
+app.on('before-quit', (event) => {
+  quit = true
+})
