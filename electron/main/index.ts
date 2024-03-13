@@ -52,11 +52,13 @@ const APP_URL = process.env.VITE_DEV_SERVER_URL ? 'https://alpha.tingkelai.com/t
 const preload = join(__dirname, '../preload/index.mjs') //! 注意：这里是mjs，是在 dist-electron目录里查找
 const ICON_PATH_PNG = join(__dirname, '../../build/icon.png')
 const ICON_PATH_ICO = join(__dirname, '../../build/icon.ico')
+const ICON_PATH_TEMPLATE = join(__dirname, '../../build/iconTemplate.png')
 
 store.clear()
 store.set('_preload_path', preload)
 store.set('_icon_path_png', ICON_PATH_PNG)
 store.set('_icon_path_ico', ICON_PATH_ICO)
+store.set('_icon_path_template', ICON_PATH_TEMPLATE)
 store.set('_server_url', process.env.VITE_DEV_SERVER_URL ?? '')
 
 async function createWindow() {
