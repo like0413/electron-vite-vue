@@ -7,7 +7,7 @@ let win: BrowserWindow | null = null
 
 function openSetting() {
   const preload = store.get('_preload_path') as string
-  const iconPath = store.get('_icon_path_png') as string
+  const iconPathPng = store.get('_icon_path_png') as string
   const viteDevServerUrl = store.get('_server_url') as string
 
   if (win) {
@@ -21,7 +21,7 @@ function openSetting() {
     height: 500,
     frame: false,
     show: false,
-    icon: iconPath,
+    icon: iconPathPng,
     webPreferences: {
       preload,
     },
