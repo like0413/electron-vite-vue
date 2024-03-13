@@ -14,7 +14,7 @@ function setMenuTemplate() {
     },
     {
       label: '刷新',
-      accelerator: 'CommandOrControl+R',
+      accelerator: 'Shift+CommandOrControl+R',
       role: 'reload',
     },
   ])
