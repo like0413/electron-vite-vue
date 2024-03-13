@@ -11,6 +11,7 @@ import setApplicationMenu from './modules/setApplicationMenu'
 import registerIPCHandlers from './modules/registerIPCHandlers'
 import setContextmenu from './modules/setContextmenu'
 import mainToRender from './modules/mainToRender'
+import setDockMenu from './modules/setDockMenu'
 import fs from 'fs'
 
 const appPath = app.getAppPath()
@@ -47,7 +48,7 @@ let win: BrowserWindow | null = null
 
 const APP_URL = process.env.VITE_DEV_SERVER_URL ? 'https://alpha.tingkelai.com/tingkelai' : pkg.appUrl
 const preload = join(__dirname, '../preload/index.mjs') //! 注意：这里是mjs，是在 dist-electron目录里查找
-const ICON_PATH = join(process.env.VITE_PUBLIC, 'favicon.ico')
+const ICON_PATH = join(__dirname, '../../build/icon.png')
 
 store.clear()
 store.set('_preload_path', preload)
@@ -56,6 +57,7 @@ store.set('_server_url', process.env.VITE_DEV_SERVER_URL ?? '')
 
 async function createWindow() {
   win = new BrowserWindow({
+    show: false, // 先隐藏窗口，等待渲染进程准备好后再显示
     width: 1280,
     height: 720,
     title: '听客来', // 窗口左上角标题（会被网页标题覆盖）
@@ -66,6 +68,10 @@ async function createWindow() {
   })
 
   win.loadURL(APP_URL)
+
+  win.on('ready-to-show', () => {
+    win.show()
+  })
 
   win.webContents.on('did-finish-load', () => {
     // 主进程向渲染进程发送消息
@@ -84,10 +90,8 @@ async function createWindow() {
 
   // 右上角关闭窗口时，不要退出应用
   win.on('close', function (event) {
-    if (!global.allowQuit) {
-      event.preventDefault()
-      win.hide()
-    }
+    event.preventDefault()
+    win.hide()
   })
 }
 
@@ -102,11 +106,13 @@ app.whenReady().then(async () => {
   // 注册处理程序（接收渲染进程发来的消息）
   registerIPCHandlers(win)
   // 创建托盘
-  createTray(win, ICON_PATH)
+  createTray(win)
   // 注册全局快捷键
   registerGlobalShortcut(win)
   // 设置 context menu
   setContextmenu(win)
+  // 设置 dock menu(macos)
+  setDockMenu()
 })
 
 // 如果试图打开另一个主窗口，则focus在主窗口上，而不是打开另一个窗口
@@ -133,3 +139,5 @@ app.on('window-all-closed', () => {
   win = null
   if (process.platform !== 'darwin') app.quit()
 })
+
+app.on('before-quit', (event) => {})
