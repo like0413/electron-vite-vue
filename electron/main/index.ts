@@ -44,10 +44,6 @@ process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 
 // ---------------------------------------------主要逻辑---------------------------------------------------
 
-let win: BrowserWindow | null = null
-
-let quit = false
-
 const APP_URL = process.env.VITE_DEV_SERVER_URL ? 'https://alpha.tingkelai.com/tingkelai' : pkg.appUrl
 const preload = join(__dirname, '../preload/index.mjs') //! 注意：这里是mjs，是在 dist-electron目录里查找
 const ICON_PATH_PNG = join(__dirname, '../../build/icon.png')
@@ -60,6 +56,10 @@ store.set('_icon_path_png', ICON_PATH_PNG)
 store.set('_icon_path_ico', ICON_PATH_ICO)
 store.set('_icon_path_template', ICON_PATH_TEMPLATE)
 store.set('_server_url', process.env.VITE_DEV_SERVER_URL ?? '')
+
+let win: BrowserWindow | null = null
+
+let quit = false
 
 async function createWindow() {
   win = new BrowserWindow({
@@ -151,6 +151,7 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
 })
 
+// quit标志，避免macOS的dock图标右键点击退出时，无法退出
 app.on('before-quit', (event) => {
   quit = true
 })
