@@ -44,13 +44,13 @@ process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 // ---------------------------------------------主要逻辑---------------------------------------------------
 
 const APP_URL = process.env.VITE_DEV_SERVER_URL ? 'https://alpha.tingkelai.com/tingkelai' : pkg.appUrl
-const preload = join(__dirname, '../preload/index.mjs') //! 注意：这里是mjs，是在 dist-electron目录里查找
+const PRELOAD_PATH = join(__dirname, '../preload/index.mjs') //! 注意：这里是mjs，是在 dist-electron目录里查找
 const ICON_PATH_PNG = join(__dirname, '../../build/icon.png')
 const ICON_PATH_ICO = join(__dirname, '../../build/icon.ico')
 const ICON_PATH_TEMPLATE = join(__dirname, '../../build/iconTemplate.png')
 
 store.clear()
-store.set('_preload_path', preload)
+store.set('_preload_path', PRELOAD_PATH)
 store.set('_icon_path_png', ICON_PATH_PNG)
 store.set('_icon_path_ico', ICON_PATH_ICO)
 store.set('_icon_path_template', ICON_PATH_TEMPLATE)
@@ -71,7 +71,7 @@ async function createWindow() {
     title: '听客来', // 窗口左上角标题（会被网页标题覆盖）
     icon: ICON_PATH_PNG, // 窗口左上角图标（非网页图标，网页图标在index.html里设置）
     webPreferences: {
-      preload,
+      preload: PRELOAD_PATH,
     },
   })
 
