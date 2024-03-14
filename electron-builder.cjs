@@ -34,7 +34,7 @@ module.exports = {
   },
   files: ['dist', 'dist-electron'],
   mac: {
-    category: 'public.app-category.medical',
+    category: 'public.app-category.productivity',
     target: ['dmg'],
     artifactName: '${productName}-Mac-${version}-Installer.${ext}',
   },

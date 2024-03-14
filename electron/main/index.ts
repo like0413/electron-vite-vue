@@ -2,7 +2,6 @@ import { app, BrowserWindow, shell, ipcMain, nativeTheme } from 'electron'
 import { release } from 'node:os'
 import { join, dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import Store from 'electron-store'
 import enableUpdate from './modules/enableUpdate'
 import createTray from './modules/createTray'
 import registerGlobalShortcut from './modules/registerGlobalShortcut'
@@ -16,8 +15,6 @@ import fs from 'fs'
 const appPath = app.getAppPath()
 const pkgPath = resolve(appPath, './package.json')
 const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'))
-
-const store = new Store()
 
 globalThis.__filename = fileURLToPath(import.meta.url)
 globalThis.__dirname = dirname(__filename)
@@ -44,17 +41,8 @@ process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 // ---------------------------------------------主要逻辑---------------------------------------------------
 
 const APP_URL = process.env.VITE_DEV_SERVER_URL ? 'https://alpha.tingkelai.com/tingkelai' : pkg.appUrl
-const PRELOAD_PATH = join(__dirname, '../preload/index.mjs') //! 注意：这里是mjs，是在 dist-electron目录里查找
-const ICON_PATH_PNG = join(__dirname, '../../build/icon.png')
-const ICON_PATH_ICO = join(__dirname, '../../build/icon.ico')
-const ICON_PATH_TEMPLATE = join(__dirname, '../../build/iconTemplate.png')
-
-store.clear()
-store.set('_preload_path', PRELOAD_PATH)
-store.set('_icon_path_png', ICON_PATH_PNG)
-store.set('_icon_path_ico', ICON_PATH_ICO)
-store.set('_icon_path_template', ICON_PATH_TEMPLATE)
-store.set('_server_url', process.env.VITE_DEV_SERVER_URL ?? '')
+const PRELOAD_PATH = join(__dirname, '../preload/index.mjs')
+const ICON_PATH = join(__dirname, '../../build/icon.png')
 
 let win: BrowserWindow | null = null
 
@@ -69,7 +57,7 @@ async function createWindow() {
     minHeight: 600,
     center: true,
     title: '听客来', // 窗口左上角标题（会被网页标题覆盖）
-    icon: ICON_PATH_PNG, // 窗口左上角图标（非网页图标，网页图标在index.html里设置）
+    icon: ICON_PATH, // 窗口左上角图标（非网页图标，网页图标在index.html里设置）
     webPreferences: {
       preload: PRELOAD_PATH,
     },
@@ -111,8 +99,6 @@ app.whenReady().then(async () => {
   setTasksList()
   // 设置标题栏菜单
   setApplicationMenu()
-  // 设置 dock menu(macos)
-  // setDockMenu()
   // 创建主窗口
   await createWindow()
   // 注册处理程序（接收渲染进程发来的消息）

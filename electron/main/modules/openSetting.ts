@@ -1,14 +1,12 @@
 import { app, BrowserWindow } from 'electron'
-import Store from 'electron-store'
-
-const store = new Store()
+import { getPath } from '../helpers'
 
 let win: BrowserWindow | null = null
 
 function openSetting() {
-  const preload = store.get('_preload_path') as string
-  const iconPathPng = store.get('_icon_path_png') as string
-  const viteDevServerUrl = store.get('_server_url') as string
+  const preload = getPath('../preload/index.mjs')
+  const iconPathPng = getPath('../../build/icon.png')
+  const viteDevServerUrl = getPath('../../build/icon.ico')
 
   if (win) {
     win.show()

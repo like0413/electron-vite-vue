@@ -1,17 +1,28 @@
-import { app, Tray, Menu, BrowserWindow, nativeImage } from 'electron'
+import { app, Tray, Menu, BrowserWindow, nativeImage, nativeTheme } from 'electron'
 import openSetting from './openSetting'
-import Store from 'electron-store'
-
-const store = new Store()
+import { getPath } from '../helpers'
 
 let tray: Tray | null = null
 
-function createTray(win: BrowserWindow) {
-  const iconPathPng = store.get('_icon_path_template') as string
-  const iconPathIco = store.get('_icon_path_ico') as string
+function getIcon() {
+  let size = 32
+  let iconPath = ''
+  if (process.platform === 'darwin') {
+    if (nativeTheme.shouldUseDarkColors) {
+      iconPath = getPath('../../build/icon_mac_light.png')
+    } else {
+      iconPath = getPath('../../build/icon_mac_dark.png')
+    }
+  } else {
+    size = 32
+    iconPath = getPath('../../build/icon.ico')
+  }
 
-  const icon = nativeImage.createFromPath(process.platform === 'darwin' ? iconPathPng : iconPathIco)
-  tray = new Tray(icon)
+  return nativeImage.createFromPath(iconPath).resize({ width: size, height: size })
+}
+
+function createTray(win: BrowserWindow) {
+  tray = new Tray(getIcon())
 
   const contextMenu = Menu.buildFromTemplate([
     {

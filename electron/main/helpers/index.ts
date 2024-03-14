@@ -1,3 +1,6 @@
+import { fileURLToPath } from 'node:url'
+import { join, dirname, resolve } from 'node:path'
+
 function getInnerAppUrl() {
   let url = ''
 
@@ -30,4 +33,6 @@ function getEnv() {
   }
 }
 
-export { getInnerAppUrl, getEnv }
+const getPath = (path: string) => join(dirname(fileURLToPath(import.meta.url)), path)
+
+export { getInnerAppUrl, getEnv, getPath }
