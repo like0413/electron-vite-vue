@@ -2,6 +2,7 @@ import { app, BrowserWindow, shell, ipcMain, nativeTheme } from 'electron'
 import { release } from 'node:os'
 import { join, dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import fs from 'fs'
 import enableUpdate from './modules/enableUpdate'
 import createTray from './modules/createTray'
 import registerGlobalShortcut from './modules/registerGlobalShortcut'
@@ -10,18 +11,15 @@ import setApplicationMenu from './modules/setApplicationMenu'
 import registerIPCHandlers from './modules/registerIPCHandlers'
 import setContextmenu from './modules/setContextmenu'
 import mainToRender from './modules/mainToRender'
-import fs from 'fs'
+import { getPath } from './helpers'
 
 const appPath = app.getAppPath()
 const pkgPath = resolve(appPath, './package.json')
 const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'))
 
-globalThis.__filename = fileURLToPath(import.meta.url)
-globalThis.__dirname = dirname(__filename)
-
-process.env.ROOT = join(__dirname, '..')
-process.env.DIST = join(process.env.ROOT, '../dist')
-process.env.VITE_PUBLIC = process.env.VITE_DEV_SERVER_URL ? join(process.env.ROOT, '../public') : process.env.DIST
+const publicPath = getPath('../../public')
+const distPath = getPath('../../dist')
+process.env.VITE_PUBLIC = process.env.VITE_DEV_SERVER_URL ? publicPath : distPath
 
 // 禁用 Windows 7的GPU加速
 if (release().startsWith('6.1')) app.disableHardwareAcceleration()
@@ -41,8 +39,6 @@ process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 // ---------------------------------------------主要逻辑---------------------------------------------------
 
 const APP_URL = process.env.VITE_DEV_SERVER_URL ? 'https://alpha.tingkelai.com/tingkelai' : pkg.appUrl
-const PRELOAD_PATH = join(__dirname, '../preload/index.mjs')
-const ICON_PATH = join(__dirname, '../../build/icon.png')
 
 let win: BrowserWindow | null = null
 
@@ -57,9 +53,9 @@ async function createWindow() {
     minHeight: 600,
     center: true,
     title: '听客来', // 窗口左上角标题（会被网页标题覆盖）
-    icon: ICON_PATH, // 窗口左上角图标（非网页图标，网页图标在index.html里设置）
+    icon: getPath('../../build/icon.png'), // 窗口左上角图标（非网页图标，网页图标在index.html里设置）
     webPreferences: {
-      preload: PRELOAD_PATH,
+      preload: getPath('../preload/index.mjs'),
     },
   })
 

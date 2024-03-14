@@ -5,8 +5,7 @@ let win: BrowserWindow | null = null
 
 function openSetting() {
   const preload = getPath('../preload/index.mjs')
-  const iconPathPng = getPath('../../build/icon.png')
-  const viteDevServerUrl = getPath('../../build/icon.ico')
+  const icon = getPath('../../build/icon.png')
 
   if (win) {
     win.show()
@@ -19,14 +18,14 @@ function openSetting() {
     height: 500,
     frame: false,
     show: false,
-    icon: iconPathPng,
+    icon,
     webPreferences: {
       preload,
     },
   })
 
-  if (viteDevServerUrl) {
-    win.loadURL(viteDevServerUrl + '#/setting')
+  if (process.env.VITE_DEV_SERVER_URL) {
+    win.loadURL(process.env.VITE_DEV_SERVER_URL + '#/setting')
   } else {
     win.loadURL(app.getAppPath() + '/dist/index.html#/setting')
   }

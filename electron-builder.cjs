@@ -3,34 +3,28 @@ const appId = 'com.' + ENV + '.tingkelai.app'
 const productName = ENV === 'prod' ? 'tingkelai' : 'tingkelai-' + ENV
 const shortcutName = ENV === 'prod' ? '听客来' : '听客来 ' + ENV.charAt(0).toUpperCase() + ENV.slice(1)
 
-function getAppUrl(env) {
-  let appUrl = ''
-  switch (env) {
-    case 'prod':
-      appUrl = 'https://www.tingkelai.com/tingkelai'
-      break
-    case 'beta':
-      appUrl = 'https://beta.tingkelai.com/tingkelai'
-      break
-    case 'alpha':
-      appUrl = 'https://alpha.tingkelai.com/tingkelai'
-      break
-  }
-  return appUrl
+let appUrl = ''
+switch (ENV) {
+  case 'prod':
+    appUrl = 'https://www.tingkelai.com/tingkelai'
+    break
+  case 'beta':
+    appUrl = 'https://beta.tingkelai.com/tingkelai'
+    break
+  case 'alpha':
+    appUrl = 'https://alpha.tingkelai.com/tingkelai'
+    break
 }
-
-const appUrl = getAppUrl(ENV)
 
 module.exports = {
   appId,
   asar: true,
   productName,
-  copyright: 'Copyright © 2024 ${author}',
   directories: {
     output: 'release/${version}',
   },
   extraMetadata: {
-    appUrl,
+    appUrl, // 注入地址，用于main.ts
   },
   files: ['dist', 'dist-electron'],
   mac: {
@@ -67,7 +61,3 @@ module.exports = {
     url: 'https://like-001.oss-cn-hangzhou.aliyuncs.com/tingkelai-client/' + ENV + '/latest',
   },
 }
-
-/**
- * build 下的图标作用于桌面快捷方式、安装包、安装程序、开始菜单
- */
