@@ -90,7 +90,6 @@ async function createWindow() {
 }
 
 app.whenReady().then(async () => {
-  nativeTheme.themeSource = 'light'
   // 设置任务栏列表
   setTasksList()
   // 设置标题栏菜单

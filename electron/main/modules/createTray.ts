@@ -7,11 +7,11 @@ let tray: Tray | null = null
 function getIcon() {
   let iconPath = ''
   if (process.platform === 'darwin') {
-    if (nativeTheme.shouldUseDarkColors) {
-      iconPath = getPath('../../build/icon_mac_light.png')
-    } else {
-      iconPath = getPath('../../build/icon_mac_dark.png')
-    }
+    // if (nativeTheme.shouldUseDarkColors) {
+    // iconPath = getPath('../../build/icon_mac_light.png')
+    // } else {
+    iconPath = getPath('../../build/iconTemplate.png')
+    // }
   } else {
     iconPath = getPath('../../build/icon.ico')
   }
