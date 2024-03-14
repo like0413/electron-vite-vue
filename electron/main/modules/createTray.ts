@@ -5,7 +5,6 @@ import { getPath } from '../helpers'
 let tray: Tray | null = null
 
 function getIcon() {
-  let size = 32
   let iconPath = ''
   if (process.platform === 'darwin') {
     if (nativeTheme.shouldUseDarkColors) {
@@ -14,11 +13,10 @@ function getIcon() {
       iconPath = getPath('../../build/icon_mac_dark.png')
     }
   } else {
-    size = 32
     iconPath = getPath('../../build/icon.ico')
   }
 
-  return nativeImage.createFromPath(iconPath).resize({ width: size, height: size })
+  return nativeImage.createFromPath(iconPath).resize({ width: 32, height: 32 })
 }
 
 function createTray(win: BrowserWindow) {
