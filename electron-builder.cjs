@@ -31,6 +31,10 @@ module.exports = {
     category: 'public.app-category.productivity',
     target: ['dmg'],
     artifactName: '${productName}-Mac-${version}-Installer.${ext}',
+
+    hardenedRuntime: true,
+    entitlements: 'build/entitlements.mac.plist',
+    entitlementsInherit: 'build/entitlements.mac.plist',
   },
   win: {
     target: [
