@@ -64,7 +64,7 @@ module.exports = {
     target: ['AppImage'],
     artifactName: '${productName}-Linux-${version}.${ext}',
   },
-  afterSign: 'scripts/notarize.js',
+  // afterSign: 'scripts/notarize.js', // 如果需要公证就打开
   publish: {
     provider: 'generic',
     url: 'https://like-001.oss-cn-hangzhou.aliyuncs.com/tingkelai-client/' + ENV + '/latest',

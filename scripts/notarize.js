@@ -8,18 +8,16 @@ import path from 'path'
 
 const ENV = process.env.npm_lifecycle_event.split(':')[1]
 
-const { APPLE_ID, APPLE_PASSWORD, APPLE_TEAM_ID } = process.env // 在github的secrets环境变量中设置
+const { APPLE_ID, APPLE_PASSWORD, APPLE_TEAM_ID } = process.env // .github/workflows/ci.yml的pnpm build
 
 const main = async (context) => {
   const { electronPlatformName, appOutDir } = context
 
-  // 如果不是mac平台，或者不是prod环境，或者没有苹果账号信息，就跳过
-  if (electronPlatformName !== 'darwin' || ENV !== 'prod' || !APPLE_ID || !APPLE_PASSWORD || !APPLE_TEAM_ID) {
-    console.log('跳过公证')
+  // 如果不是mac平台，或者不是prod环境就跳过
+  if (electronPlatformName !== 'darwin' || ENV !== 'prod') {
     return
   }
 
-  console.log('公证开始')
   const appName = context.packager.appInfo.productFilename
   await notarize({
     appBundleId: 'prod.tingkelai.app',
@@ -28,7 +26,6 @@ const main = async (context) => {
     appleIdPassword: APPLE_PASSWORD,
     teamId: APPLE_TEAM_ID,
   })
-  console.log('公证结束')
 }
 
 export default main
