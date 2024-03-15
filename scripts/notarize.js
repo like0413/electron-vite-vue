@@ -1,5 +1,5 @@
 /**
- * 这里是 mac 公证
+ * mac 公证
  * link:https://kilianvalkhof.com/2019/electron/notarizing-your-electron-application/
  */
 
@@ -8,7 +8,7 @@ import path from 'path'
 
 const ENV = process.env.npm_lifecycle_event.split(':')[1]
 
-const { APPLE_ID, APPLE_PASSWORD, APPLE_TEAM_ID } = process.env
+const { APPLE_ID, APPLE_PASSWORD, APPLE_TEAM_ID } = process.env // 在github的secrets环境变量中设置
 
 const main = async (context) => {
   const { electronPlatformName, appOutDir } = context
