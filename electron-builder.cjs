@@ -33,8 +33,12 @@ module.exports = {
     artifactName: '${productName}-Mac-${version}-Installer.${ext}',
 
     hardenedRuntime: true,
+    gatekeeperAssess: false,
     entitlements: 'build/entitlements.mac.plist',
     entitlementsInherit: 'build/entitlements.mac.plist',
+  },
+  dmg: {
+    sign: false,
   },
   win: {
     target: [
@@ -60,6 +64,7 @@ module.exports = {
     target: ['AppImage'],
     artifactName: '${productName}-Linux-${version}.${ext}',
   },
+  afterSign: 'scripts/notarize.js',
   publish: {
     provider: 'generic',
     url: 'https://like-001.oss-cn-hangzhou.aliyuncs.com/tingkelai-client/' + ENV + '/latest',

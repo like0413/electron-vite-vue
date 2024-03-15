@@ -8,6 +8,9 @@ devDependencies:
   '@ant-design/icons-vue':
     specifier: ^7.0.1
     version: 7.0.1(vue@3.4.21)
+  '@electron/notarize':
+    specifier: ^2.3.0
+    version: 2.3.0
   '@release-it/conventional-changelog':
     specifier: ^8.0.1
     version: 8.0.1(release-it@17.1.1)
@@ -182,6 +185,17 @@ packages:
 
   /@electron/notarize@2.2.1:
     resolution: {integrity: sha512-aL+bFMIkpR0cmmj5Zgy0LMKEpgy43/hw5zadEArgmAMWWlKc5buwFvFT9G/o/YJkvXAJm5q3iuTuLaiaXW39sg==}
+    engines: {node: '>= 10.0.0'}
+    dependencies:
+      debug: 4.3.4
+      fs-extra: 9.1.0
+      promise-retry: 2.0.1
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
+  /@electron/notarize@2.3.0:
+    resolution: {integrity: sha512-EiTBU0BwE7HZZjAG1fFWQaiQpCuPrVGn7jPss1kUjD6eTTdXXd29RiZqEqkgN7xqt/Pgn4g3I7Saqovanrfj3w==}
     engines: {node: '>= 10.0.0'}
     dependencies:
       debug: 4.3.4

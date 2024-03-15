@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "@ant-design/icons-vue": "^7.0.1",
+    "@electron/notarize": "^2.3.0",
     "@release-it/conventional-changelog": "^8.0.1",
     "@vitejs/plugin-vue": "^5.0.1",
     "address": "^2.0.2",
