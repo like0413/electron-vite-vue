@@ -14,7 +14,7 @@ const main = async (context) => {
   const { electronPlatformName, appOutDir } = context
 
   // 如果不是mac平台，或者不是prod环境，或者没有苹果账号信息，就跳过
-  if (electronPlatformName === 'win32' || ENV !== 'prod' || !APPLE_ID || !APPLE_PASSWORD || !APPLE_TEAM_ID) {
+  if (electronPlatformName !== 'darwin' || ENV !== 'prod' || !APPLE_ID || !APPLE_PASSWORD || !APPLE_TEAM_ID) {
     console.log('跳过公证')
     return
   }
