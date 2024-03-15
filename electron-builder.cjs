@@ -48,6 +48,8 @@ module.exports = {
       },
     ],
     artifactName: '${productName}-Windows-${version}-Setup.${ext}',
+    // certificateFile: '${env.CSC_WIN_LINK}',
+    // certificatePassword: '${env.CSC_WIN_KEY_PASSWORD}',
   },
   nsis: {
     oneClick: false,
@@ -64,7 +66,7 @@ module.exports = {
     target: ['AppImage'],
     artifactName: '${productName}-Linux-${version}.${ext}',
   },
-  // afterSign: 'scripts/notarize.js', // 如果需要公证就打开
+  // afterSign: 'scripts/notarize.js', // 需要公证就打开
   publish: {
     provider: 'generic',
     url: 'https://like-001.oss-cn-hangzhou.aliyuncs.com/tingkelai-client/' + ENV + '/latest',

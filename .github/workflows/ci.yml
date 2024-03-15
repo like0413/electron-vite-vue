@@ -48,10 +48,12 @@ jobs:
       - name: 构建
         run: pnpm build:${{ steps.get-env.outputs.ENV}}
         # env:
-        # # 证书
+        #   # win
+        #   CSC_WIN_LINK: ${{ secrets.CSC_WIN_LINK }} # 可以将证书转为base64存储
+        #   CSC_WIN_KEY_PASSWORD: ${{ secrets.CSC_WIN_KEY_PASSWORD }}
+        #   # mac
         #   CSC_LINK: ${{ secrets.CSC_LINK }} # 可以将证书转为base64存储
         #   CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
-        # # 公证
         #   APPLE_ID: ${{ secrets.APPLE_ID }}
         #   APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
         #   APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}

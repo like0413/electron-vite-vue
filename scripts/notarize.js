@@ -19,6 +19,7 @@ const main = async (context) => {
   }
 
   const appName = context.packager.appInfo.productFilename
+
   await notarize({
     appBundleId: 'prod.tingkelai.app',
     appPath: `${appOutDir}/${appName}.app`,
