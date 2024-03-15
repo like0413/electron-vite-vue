@@ -9,14 +9,13 @@ function getIcon() {
   let size = 16
   if (process.platform === 'darwin') {
     if (nativeTheme.shouldUseDarkColors) {
-      iconPath = getPath('../../build/icon_mac_light.png')
+      iconPath = getPath('../../build/tray_mac_light.png')
     } else {
-      iconPath = getPath('../../build/icon_mac_dark.png')
+      iconPath = getPath('../../build/tray_mac_dark.png')
     }
   } else {
     size = 64
     iconPath = getPath('../../build/icon.ico')
-    console.log('iconPath: ', iconPath)
   }
 
   return nativeImage.createFromPath(iconPath).resize({ width: size, height: size })

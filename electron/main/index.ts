@@ -46,7 +46,6 @@ let quit = false
 
 async function createWindow() {
   win = new BrowserWindow({
-    show: false, // 先隐藏窗口，等待渲染进程准备好后再显示
     width: 1280,
     height: 800,
     minWidth: 800,
@@ -60,10 +59,6 @@ async function createWindow() {
   })
 
   win.loadURL(APP_URL)
-
-  win.on('ready-to-show', () => {
-    win.show()
-  })
 
   win.webContents.on('did-finish-load', () => {
     // 主进程向渲染进程发送消息
@@ -84,6 +79,9 @@ async function createWindow() {
   win.on('close', function (event) {
     if (!quit) {
       event.preventDefault()
+      if (win.isMaximized()) {
+        win.unmaximize()
+      }
       win.hide()
     }
   })
@@ -117,18 +115,26 @@ app.on('second-instance', () => {
 
 // 当应用程序激活时，如果没有窗口，则创建一个新窗口
 app.on('activate', () => {
-  const allWindows = BrowserWindow.getAllWindows()
-  if (allWindows.length) {
-    allWindows[0].focus()
-  } else {
+  if (win === null) {
     createWindow()
+  } else {
+    win.show()
   }
 })
 
 // 当所有窗口关闭时退出应用
 app.on('window-all-closed', () => {
   win = null
-  if (process.platform !== 'darwin') app.quit()
+  if (process.platform !== 'darwin') {
+    app.quit()
+  }
+})
+
+// 禁用系统默认的右键菜单
+app.on('browser-window-created', (event, win) => {
+  win.webContents.on('context-menu', (e) => {
+    e.preventDefault()
+  })
 })
 
 // quit标志，避免macOS的dock图标右键点击退出时，无法退出

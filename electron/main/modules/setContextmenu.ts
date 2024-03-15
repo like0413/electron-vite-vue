@@ -34,6 +34,8 @@ function setContextmenu(win: BrowserWindow) {
     const menu = setMenuTemplate()
     menu.popup({
       window: win,
+      x: params.x,
+      y: params.y,
     })
   })
 }
