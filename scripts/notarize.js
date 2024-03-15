@@ -19,7 +19,7 @@ const main = async (context) => {
     return
   }
 
-  console.log('开始公证')
+  console.log('公证开始')
   const appName = context.packager.appInfo.productFilename
   await notarize({
     appBundleId: 'prod.tingkelai.app',
