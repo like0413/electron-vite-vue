@@ -21,6 +21,7 @@ function openSetting() {
     height: 500,
     frame: false,
     title: '设置',
+    show: false,
     icon,
     webPreferences: {
       preload,
@@ -33,7 +34,9 @@ function openSetting() {
     win.loadURL(app.getAppPath() + '/dist/index.html#/setting')
   }
 
-  win.show()
+  win.on('ready-to-show', () => {
+    win.show()
+  })
 
   win.on('closed', () => {
     win.destroy()
