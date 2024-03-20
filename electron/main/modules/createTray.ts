@@ -1,6 +1,6 @@
 import { app, Tray, Menu, BrowserWindow, nativeImage, nativeTheme, systemPreferences } from 'electron'
+import { join, dirname, resolve } from 'node:path'
 import openSetting from './openSetting'
-import { getPath } from '../helpers'
 
 let tray: Tray | null = null
 
@@ -9,13 +9,13 @@ function getIcon() {
   let size = 16
   if (process.platform === 'darwin') {
     if (nativeTheme.shouldUseDarkColors) {
-      iconPath = getPath('../../build/tray_mac_light.png')
+      iconPath = join(process.env.VITE_PUBLIC, './icon_mac_light.png')
     } else {
-      iconPath = getPath('../../build/tray_mac_dark.png')
+      iconPath = join(process.env.VITE_PUBLIC, './icon_mac_dark.png')
     }
   } else {
     size = 64
-    iconPath = getPath('../../build/icon.ico')
+    iconPath = join(process.env.VITE_PUBLIC, './icon.png')
   }
 
   return nativeImage.createFromPath(iconPath).resize({ width: size, height: size })

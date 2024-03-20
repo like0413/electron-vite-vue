@@ -11,15 +11,17 @@ import setApplicationMenu from './modules/setApplicationMenu'
 import registerIPCHandlers from './modules/registerIPCHandlers'
 import setContextmenu from './modules/setContextmenu'
 import mainToRender from './modules/mainToRender'
-import { getPath } from './helpers'
 
 const appPath = app.getAppPath()
 const pkgPath = resolve(appPath, './package.json')
 const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'))
 
-const publicPath = getPath('../../public')
-const distPath = getPath('../../dist')
-process.env.VITE_PUBLIC = process.env.VITE_DEV_SERVER_URL ? publicPath : distPath
+globalThis.__filename = fileURLToPath(import.meta.url)
+globalThis.__dirname = dirname(__filename)
+
+process.env.ROOT = join(__dirname, '..')
+process.env.DIST = join(process.env.ROOT, '../dist')
+process.env.VITE_PUBLIC = process.env.VITE_DEV_SERVER_URL ? join(process.env.ROOT, '../public') : process.env.DIST
 
 // 禁用 Windows 7的GPU加速
 if (release().startsWith('6.1')) app.disableHardwareAcceleration()
@@ -39,6 +41,8 @@ process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 // ---------------------------------------------主要逻辑---------------------------------------------------
 
 const APP_URL = process.env.VITE_DEV_SERVER_URL ? 'https://alpha.tingkelai.com/tingkelai' : pkg.appUrl
+const PRELOAD_PATH = join(__dirname, '../preload/index.mjs') //! 注意：这里是mjs，是在 dist-electron目录里查找
+const ICON_PATH = join(process.env.VITE_PUBLIC, './icon.png')
 
 let win: BrowserWindow | null = null
 
@@ -52,9 +56,9 @@ async function createWindow() {
     minHeight: 600,
     center: true,
     title: '听客来', // 窗口左上角标题（会被网页标题覆盖）
-    icon: getPath('../../build/icon.png'), // 窗口左上角图标（非网页图标，网页图标在index.html里设置）
+    icon: ICON_PATH,
     webPreferences: {
-      preload: getPath('../preload/index.mjs'),
+      preload: PRELOAD_PATH,
     },
   })
 

@@ -1,11 +1,11 @@
 import { app, BrowserWindow } from 'electron'
-import { getPath } from '../helpers'
+import { join, dirname, resolve } from 'node:path'
 
 let win: BrowserWindow | null = null
 
 function openSetting() {
-  const preload = getPath('../preload/index.mjs')
-  const icon = getPath('../../build/icon.png')
+  const preload = join(__dirname, '../preload/index.mjs')
+  const icon = join(process.env.VITE_PUBLIC, './icon.png')
 
   if (win) {
     win.show()
