@@ -1,6 +1,7 @@
 import { app, Tray, Menu, BrowserWindow, nativeImage, nativeTheme, systemPreferences } from 'electron'
 import { join, dirname, resolve } from 'node:path'
 import openSetting from './openSetting'
+import log from 'electron-log/main'
 
 let tray: Tray | null = null
 
@@ -17,6 +18,8 @@ function getIcon() {
     size = 64
     iconPath = join(process.env.VITE_PUBLIC, './icon.png')
   }
+
+  log.info('tray icon:', iconPath)
 
   return nativeImage.createFromPath(iconPath).resize({ width: size, height: size })
 }
