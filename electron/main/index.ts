@@ -81,7 +81,9 @@ async function createWindow() {
   win.on('close', function (event) {
     if (!quit) {
       event.preventDefault()
-      if (win.isMaximized()) {
+      if (win.isFullScreen()) {
+        win.setFullScreen(false)
+      } else if (win.isMaximized()) {
         win.unmaximize()
       }
       win.hide()
