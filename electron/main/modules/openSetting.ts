@@ -1,11 +1,13 @@
 import { app, BrowserWindow } from 'electron'
 import { join, dirname, resolve } from 'node:path'
 import log from 'electron-log/main'
+import { fileURLToPath, URL } from 'node:url'
 
 let win: BrowserWindow | null = null
 
 function openSetting() {
   const preload = app.getAppPath() + '/dist-electron/preload/index.mjs'
+  // join(dirname(fileURLToPath(import.meta.url)), '../preload/index.mjs')
   const icon = join(process.env.VITE_PUBLIC, './icon.png')
 
   if (win) {
