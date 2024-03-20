@@ -6,7 +6,7 @@ let tray: Tray | null = null
 
 function getIcon() {
   let iconPath = ''
-  let size = 16
+  let size = 32
   if (process.platform === 'darwin') {
     if (nativeTheme.shouldUseDarkColors) {
       iconPath = join(process.env.VITE_PUBLIC, './icon_mac_light.png')
