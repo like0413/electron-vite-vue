@@ -1,6 +1,6 @@
 import { app, BrowserWindow, shell, ipcMain, nativeTheme } from 'electron'
 import { release } from 'node:os'
-import { join, dirname, resolve } from 'node:path'
+import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import fs from 'fs'
 import enableUpdate from './modules/enableUpdate'
@@ -13,15 +13,16 @@ import setContextmenu from './modules/setContextmenu'
 import mainToRender from './modules/mainToRender'
 
 const appPath = app.getAppPath()
-const pkgPath = resolve(appPath, './package.json')
+const pkgPath = path.resolve(appPath, './package.json')
 const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'))
 
 globalThis.__filename = fileURLToPath(import.meta.url)
-globalThis.__dirname = dirname(__filename)
+globalThis.__dirname = path.dirname(__filename)
 
-process.env.ROOT = join(__dirname, '..')
-process.env.DIST = join(process.env.ROOT, '../dist')
-process.env.VITE_PUBLIC = process.env.VITE_DEV_SERVER_URL ? join(process.env.ROOT, '../public') : process.env.DIST
+process.env.ROOT = path.join(__dirname, '..')
+process.env.DIST = path.join(process.env.ROOT, '../dist')
+process.env.DIST_ELECTRON = path.join(process.env.ROOT, '../dist-electron')
+process.env.VITE_PUBLIC = process.env.VITE_DEV_SERVER_URL ? path.join(process.env.ROOT, '../public') : process.env.DIST
 
 // 禁用 Windows 7的GPU加速
 if (release().startsWith('6.1')) app.disableHardwareAcceleration()
@@ -41,8 +42,8 @@ process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 // ---------------------------------------------主要逻辑---------------------------------------------------
 
 const APP_URL = process.env.VITE_DEV_SERVER_URL ? 'https://alpha.tingkelai.com/tingkelai' : pkg.appUrl
-const PRELOAD_PATH = join(__dirname, '../preload/index.mjs') //! 注意：这里是mjs，是在 dist-electron目录里查找
-const ICON_PATH = join(process.env.VITE_PUBLIC, './icon.png')
+const PRELOAD_PATH = path.join(__dirname, '../preload/index.mjs') //! 注意：这里是mjs，是在 dist-electron目录里查找
+const ICON_PATH = path.join(process.env.VITE_PUBLIC, './icon.png')
 
 let win: BrowserWindow | null = null
 
