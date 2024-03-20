@@ -2,14 +2,11 @@ import { dialog, app, ipcMain } from 'electron'
 import { autoUpdater } from 'electron-updater'
 import log from 'electron-log/main'
 
-async function enableUpdate() {
+async function updateHandler() {
   autoUpdater.autoDownload = false
   autoUpdater.autoInstallOnAppQuit = true // 在退出时自动安装（默认）
 
   autoUpdater.checkForUpdates()
-  setInterval(() => {
-    autoUpdater.checkForUpdates()
-  }, 60 * 60 * 1000)
 
   autoUpdater.on('error', (err) => {
     log.error('更新出错了', err)
@@ -34,6 +31,12 @@ async function enableUpdate() {
         autoUpdater.quitAndInstall()
       })
   })
+}
+
+function enableUpdate() {
+  setTimeout(() => {
+    updateHandler()
+  }, 10 * 1000)
 }
 
 export default enableUpdate

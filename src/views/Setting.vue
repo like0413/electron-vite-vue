@@ -15,10 +15,10 @@
             <DeploymentUnitOutlined />
             <span class="nav-text">快捷键</span>
           </a-menu-item>
-          <!-- <a-menu-item key="update">
+          <a-menu-item key="update">
             <upload-outlined />
             <span class="nav-text">更新</span>
-          </a-menu-item> -->
+          </a-menu-item>
           <a-menu-item key="about">
             <InfoCircleOutlined />
             <span class="nav-text">关于</span>
@@ -61,13 +61,18 @@
           </div>
         </div>
 
-        <div v-show="selectedKeys.includes('about')" title="关于">
+        <div v-show="selectedKeys.includes('update')" title="更新">
           <div class="item">
             <div class="sub-title">当前版本：</div>
             <div class="mac sub-text">
               {{ appInfo.appVersion }}
             </div>
           </div>
+
+          <a-button type="primary" @click="checkForUpdate">检查更新</a-button>
+        </div>
+
+        <div v-show="selectedKeys.includes('about')" title="关于">
           <div class="item">
             <div class="sub-title">mac码：</div>
             <div class="mac sub-text">
@@ -139,6 +144,23 @@ onMounted(() => {
     isMac.value = info.platform === 'darwin'
   })
 })
+
+// 检查更新
+function checkForUpdate() {
+  // window.electronAPI.checkForUpdate().then((res: any) => {
+  //   if (res.hasNewVersion) {
+  //     Modal.confirm({
+  //       title: '发现新版本',
+  //       content: `当前版本：${res.currentVersion}，最新版本：${res.newVersion}，是否立即更新？`,
+  //       onOk() {
+  //         window.electronAPI.downloadUpdate()
+  //       },
+  //     })
+  //   } else {
+  //     message.success('当前已是最新版本')
+  //   }
+  // })
+}
 
 // 获取mac地址
 const macCode = ref('')

@@ -66,9 +66,7 @@ async function createWindow() {
     // 主进程向渲染进程发送消息
     mainToRender(win)
     // 启用更新
-    setTimeout(() => {
-      enableUpdate()
-    }, 10 * 1000)
+    enableUpdate()
   })
 
   // 在应用中点击 https:// 开头的链接时，用默认浏览器中打开

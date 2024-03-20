@@ -18,8 +18,8 @@ switch (ENV) {
 
 module.exports = {
   appId,
-  asar: true,
   productName,
+  asar: true,
   directories: {
     output: 'release/${version}',
   },
