@@ -1,7 +1,6 @@
 import { app, Tray, Menu, BrowserWindow, nativeImage, nativeTheme, systemPreferences } from 'electron'
 import openSetting from './openSetting'
 import { getPath } from '../helpers'
-import log from 'electron-log/main'
 
 let tray: Tray | null = null
 
@@ -18,8 +17,6 @@ function getIcon() {
     size = 64
     iconPath = getPath('../../build/icon.ico')
   }
-
-  log.info('icon路径', iconPath)
 
   return nativeImage.createFromPath(iconPath).resize({ width: size, height: size })
 }
