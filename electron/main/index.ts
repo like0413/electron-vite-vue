@@ -20,15 +20,9 @@ const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'))
 globalThis.__filename = fileURLToPath(import.meta.url)
 globalThis.__dirname = path.dirname(__filename)
 
-process.env.ROOT = path.join(__dirname, '..')
-process.env.DIST = path.join(process.env.ROOT, '../dist')
-process.env.DIST_ELECTRON = path.join(process.env.ROOT, '../dist-electron')
+process.env.ROOT = path.join(__dirname, '..') // dist-electron
+process.env.DIST = path.join(process.env.ROOT, '../dist') // dist
 process.env.VITE_PUBLIC = process.env.VITE_DEV_SERVER_URL ? path.join(process.env.ROOT, '../public') : process.env.DIST
-
-log.info('process.env.ROOT:', process.env.ROOT)
-log.info('process.env.DIST:', process.env.DIST)
-log.info('process.env.DIST_ELECTRON:', process.env.DIST_ELECTRON)
-log.info('process.env.VITE_PUBLIC:', process.env.VITE_PUBLIC)
 
 // 禁用 Windows 7的GPU加速
 if (release().startsWith('6.1')) app.disableHardwareAcceleration()
@@ -50,9 +44,6 @@ process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 const APP_URL = process.env.VITE_DEV_SERVER_URL ? 'https://alpha.tingkelai.com/tingkelai' : pkg.appUrl
 const PRELOAD_PATH = path.join(__dirname, '../preload/index.mjs') //! 注意：这里是mjs，是在 dist-electron目录里查找
 const ICON_PATH = path.join(process.env.VITE_PUBLIC, './icon.png')
-
-log.info('PRELOAD_PATH', PRELOAD_PATH)
-log.info('ICON_PATH', ICON_PATH)
 
 let win: BrowserWindow | null = null
 

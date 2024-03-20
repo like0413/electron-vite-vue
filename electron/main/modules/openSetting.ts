@@ -6,14 +6,8 @@ import { fileURLToPath, URL } from 'node:url'
 let win: BrowserWindow | null = null
 
 function openSetting() {
-  const preload = app.getAppPath() + '/dist-electron/preload/index.mjs'
-  // join(dirname(fileURLToPath(import.meta.url)), '../preload/index.mjs')
+  const preload = join(app.getAppPath(), './dist-electron/preload/index.mjs')
   const icon = join(process.env.VITE_PUBLIC, './icon.png')
-
-  log.info('setting preload:', preload)
-  log.info('setting preload2:', join(dirname(fileURLToPath(import.meta.url)), '../preload/index.mjs'))
-  log.info('setting icon:', icon)
-  log.info('setting icon2:', app.getAppPath() + './dist/icon.png')
 
   if (win) {
     win.show()

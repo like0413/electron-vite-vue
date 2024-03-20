@@ -19,8 +19,6 @@ function getIcon() {
     iconPath = join(process.env.VITE_PUBLIC, './icon.png')
   }
 
-  log.info('tray icon:', iconPath)
-
   return nativeImage.createFromPath(iconPath).resize({ width: size, height: size })
 }
 
