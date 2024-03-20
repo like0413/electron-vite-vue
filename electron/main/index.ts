@@ -60,6 +60,8 @@ async function createWindow() {
 
   win.loadURL(APP_URL)
 
+  win.show()
+
   win.webContents.on('did-finish-load', () => {
     // 主进程向渲染进程发送消息
     mainToRender(win)
@@ -118,6 +120,7 @@ app.on('activate', () => {
   if (win === null) {
     createWindow()
   } else {
+    if (win.isMinimized()) win.restore()
     win.show()
   }
 })
