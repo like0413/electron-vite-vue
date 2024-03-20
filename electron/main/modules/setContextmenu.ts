@@ -30,13 +30,15 @@ function setMenuTemplate() {
 
 function setContextmenu(win: BrowserWindow) {
   win.webContents.on('context-menu', (e, params) => {
-    e.preventDefault()
     const menu = setMenuTemplate()
-    menu.popup({
-      window: win,
-      x: params.x,
-      y: params.y,
-    })
+    if (menu) {
+      e.preventDefault()
+      menu.popup({
+        window: win,
+        x: params.x,
+        y: params.y,
+      })
+    }
   })
 }
 
