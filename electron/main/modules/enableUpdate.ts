@@ -25,7 +25,7 @@ async function updateHandler() {
       .showMessageBox({
         type: 'info',
         title: '发现新版本',
-        message: '请立即更新版本，防止使用过程中出现问题',
+        message: '点击确定以安装新版本',
       })
       .then((res) => {
         autoUpdater.quitAndInstall()

@@ -1,10 +1,11 @@
 import { app, BrowserWindow } from 'electron'
 import { join, dirname, resolve } from 'node:path'
+import log from 'electron-log/main'
 
 let win: BrowserWindow | null = null
 
 function openSetting() {
-  const preload = join(__dirname, '../preload/index.mjs')
+  const preload = app.getAppPath() + '/dist-electron/preload/index.mjs'
   const icon = join(process.env.VITE_PUBLIC, './icon.png')
 
   if (win) {
@@ -17,7 +18,7 @@ function openSetting() {
     width: 700,
     height: 500,
     frame: false,
-    show: false,
+    title: '设置',
     icon,
     webPreferences: {
       preload,
@@ -30,10 +31,8 @@ function openSetting() {
     win.loadURL(app.getAppPath() + '/dist/index.html#/setting')
   }
 
-  win.once('ready-to-show', () => {
-    win.show()
-    win.focus()
-  })
+  win.show()
+
   win.on('closed', () => {
     win.destroy()
     win = null
