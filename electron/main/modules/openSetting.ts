@@ -15,7 +15,7 @@ function openSetting() {
   log.info('3:::', process.env.DIST)
   log.info('4:::', process.env.VITE_PUBLIC)
   log.info('5:::', join(__dirname, '../preload/index.mjs'))
-  log.info('6:::', join(process.env.Root, './preload/index.mjs'))
+  log.info('6:::', join(process.env.ROOT, './preload/index.mjs'))
   log.info('7:::', join(process.env.VITE_PUBLIC, './icon.png'))
   log.info('8:::', join(process.env.DIST, './icon.png'))
   log.info('9:::', app.getAppPath() + '/dist/index.html#/setting')
