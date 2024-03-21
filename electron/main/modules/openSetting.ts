@@ -6,7 +6,7 @@ import { fileURLToPath, URL } from 'node:url'
 let win: BrowserWindow | null = null
 
 function openSetting() {
-  const preload = join(app.getAppPath(), './dist-electron/preload/index.mjs')
+  const preload = join(__dirname, '../preload/index.mjs')
   const icon = join(process.env.VITE_PUBLIC, './icon.png')
 
   if (win) {
@@ -20,7 +20,6 @@ function openSetting() {
     height: 500,
     frame: false,
     title: '设置',
-    show: false,
     icon,
     webPreferences: {
       preload,
@@ -32,10 +31,6 @@ function openSetting() {
   } else {
     win.loadURL(app.getAppPath() + '/dist/index.html#/setting')
   }
-
-  win.on('ready-to-show', () => {
-    win.show()
-  })
 
   win.on('closed', () => {
     win.destroy()
