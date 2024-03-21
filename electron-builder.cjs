@@ -20,6 +20,7 @@ module.exports = {
   appId,
   productName,
   asar: true,
+  asarUnpack: ['dist/*.png', 'dist/*.ico'],
   directories: {
     output: 'release/${version}',
   },
