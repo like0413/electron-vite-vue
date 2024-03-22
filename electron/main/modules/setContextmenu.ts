@@ -19,6 +19,15 @@ function setMenuTemplate() {
       role: 'reload',
     },
     {
+      label: '控制台',
+      accelerator: 'Shift+CommandOrControl+P',
+      click: (item, focusedWindow) => {
+        if (focusedWindow) {
+          focusedWindow.webContents.toggleDevTools()
+        }
+      },
+    },
+    {
       label: '设置',
       click: () => {
         openSetting()

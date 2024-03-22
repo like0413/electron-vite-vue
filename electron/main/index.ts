@@ -1,4 +1,4 @@
-import { app, BrowserWindow, shell, ipcMain, nativeTheme } from 'electron'
+import { app, BrowserWindow, shell, ipcMain, nativeTheme, globalShortcut } from 'electron'
 import { release } from 'node:os'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -65,9 +65,10 @@ async function createWindow() {
 
   win.loadURL(APP_URL)
 
+  win.maximize()
   win.show()
 
-  win.webContents.on('did-finish-load', () => {
+  win.webContents.on('dom-ready', () => {
     // 主进程向渲染进程发送消息
     mainToRender(win)
     // 启用更新
@@ -91,6 +92,13 @@ async function createWindow() {
       }
       win.hide()
     }
+  })
+
+  win.on('blur', () => {
+    globalShortcut.unregisterAll()
+  })
+  win.on('focus', () => {
+    registerGlobalShortcut(win)
   })
 }
 
