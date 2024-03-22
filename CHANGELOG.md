@@ -1,5 +1,7 @@
 
 
+## [0.0.47](https://github.com/like0413/electron-vite-vue/compare/v0.0.46...v0.0.47) (2024-03-22)
+
 ## [0.0.46](https://github.com/like0413/electron-vite-vue/compare/v0.0.45...v0.0.46) (2024-03-21)
 
 ## [0.0.45](https://github.com/like0413/electron-vite-vue/compare/v0.0.44...v0.0.45) (2024-03-21)
