@@ -45,8 +45,6 @@ function openSetting() {
     win.loadURL('file://' + app.getAppPath() + '/dist/index.html#/setting')
   }
 
-  win.webContents.openDevTools()
-
   win.on('closed', () => {
     win.destroy()
     win = null

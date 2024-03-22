@@ -9,6 +9,14 @@ function registerGlobalShortcut(win: BrowserWindow) {
   globalShortcut.register('Shift+CommandOrControl+R', () => {
     win.reload()
   })
+  // 复制：CommandOrControl + C
+  globalShortcut.register('CommandOrControl+C', () => {
+    win.webContents.copy()
+  })
+  // 粘贴：CommandOrControl + V
+  globalShortcut.register('CommandOrControl+V', () => {
+    win.webContents.paste()
+  })
 }
 
 export default registerGlobalShortcut

@@ -10,13 +10,19 @@ function getIcon() {
   let size = 32
   if (process.platform === 'darwin') {
     if (nativeTheme.shouldUseDarkColors) {
-      iconPath = join(process.env.VITE_PUBLIC, './icon_mac_light.png')
+      iconPath = './icon_mac_light.png'
     } else {
-      iconPath = join(process.env.VITE_PUBLIC, './icon_mac_dark.png')
+      iconPath = './icon_mac_dark.png'
     }
   } else {
     size = 64
-    iconPath = join(process.env.VITE_PUBLIC, './icon.png')
+    iconPath = './icon.png'
+  }
+
+  if (app.isPackaged) {
+    iconPath = join(app.getAppPath(), '../app.asar.unpacked/dist', iconPath)
+  } else {
+    iconPath = join(process.env.VITE_PUBLIC, iconPath)
   }
 
   log.info('trayIconPath:', iconPath)
